@@ -42,7 +42,7 @@ public class UsuarioController extends BaseController {
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
 		model.addAttribute("usuario", getPrincipal());
-		return "/login.jsp";
+		return "/credenciais.jsp";
 	}
 	
 	  
