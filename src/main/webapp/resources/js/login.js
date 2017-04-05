@@ -57,5 +57,37 @@ $(document).ready(
 					}
 				},
 			});
+			$("#register-form").validate({
+
+				rules : {
+					username:{
+						required:true,
+						minlength:2,
+						maxlength: 20
+					},
+					email:{
+						required:true,
+						minlength:2,
+						maxlength: 30
+					},
+					pass:{
+						required:true,
+						minlength:2,
+						maxlength: 20,
+					},
+					confirmacaoSenha:{
+						required:true,
+						minlength:2,
+						maxlength: 20,
+						equalTo: "#pass"
+					},
+				},
+				messages: {
+					confirmacaoSenha:{
+						equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
+					}
+				}
+
+			});
 
 		});
