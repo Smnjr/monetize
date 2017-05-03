@@ -56,7 +56,7 @@ public class UsuarioController extends BaseController {
 			  if(error!=null){
 				  model.addObject("mensagem", new Mensagem( getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
 			  }
-			  model.setViewName("/login.jsp");
+			  model.setViewName("/credenciais.jsp");
 			  return model;
 	  }
 	  
@@ -80,19 +80,9 @@ public class UsuarioController extends BaseController {
 		} catch (ApplicationException ex) {
 			model.addAttribute("mensagem", new Mensagem(ex.getMessage(), TipoMensagem.ERRO));
 		}
-		return "/registro.jsp";
+		return "S/registro.jsp";
 	}
-	
 
-
-	
-	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-	public ModelAndView home(Model model) {
-		Usuario usuario = new Usuario();
-		model.addAttribute("dto", usuario);
-		return new ModelAndView("home");
-	}
-	
 	
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
@@ -117,7 +107,7 @@ public class UsuarioController extends BaseController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 
 		}
-		return "login";
+		return "/credenciais.jsp";
 	}
 	
 		private String getErrorMessage(HttpServletRequest request, String key) {

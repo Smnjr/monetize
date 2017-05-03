@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 	
 	Locale ptBR = new Locale("pt", "BR");
 	ResourceBundle messages = ResourceBundle.getBundle("sistema", ptBR);
+	Logger logger;
 
 	/**
 	 * 
@@ -33,6 +35,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 			getSession().save(t);
 			sessionFactory.getCurrentSession().flush();
 		} catch (Exception e) {
+			logger.error("Erro ao criar sessão " + e.getMessage());
 			throw new ApplicationException(messages.getString("create.error"), e);
 		}
 	}
@@ -41,6 +44,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 			getSession().delete(id);
 			getSession().flush();
 		} catch (Exception e) {
+			logger.error("Erro ao excluir registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("delete.error"), e);
 		}
 	}
@@ -50,6 +54,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 			getSession().merge(t);
 			getSession().flush();
 		} catch (Exception e) {
+			logger.error("Erro ao atualizar registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("update.error"), e);
 		}
 	}
@@ -59,6 +64,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 		try {
 			return (T) getSession().byId(type);
 		} catch (Exception e) {
+			logger.error("Erro ao obter registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("query.error"), e);
 		}
 	}
@@ -67,6 +73,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 		try {
 			return sessionFactory.getCurrentSession().createCriteria(type).list();
 		} catch (Exception e) {
+			logger.error("Erro ao obter registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("query.error"), e);
 		}
 	}

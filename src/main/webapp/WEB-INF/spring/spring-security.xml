@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+		
+	<global-method-security secured-annotations="enabled" proxy-target-class="true" pre-post-annotations="enabled" />
+	
+	<http pattern="/resources/**" security="none"/>
+	
+	<http use-expressions="true">
+	<remember-me/>
+		<intercept-url pattern="/pages/protected/admin/*" access="hasAnyRole('ROLE_ADMIN')" 			 />
+		<intercept-url pattern="/pages/protected/user/*"  access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+		<intercept-url pattern="/pages/protected/*" 	  access="isAuthenticated()" 					 />
+		<intercept-url pattern="/login"   				  access="permitAll"  							 />
+		<intercept-url pattern="/home"					  access="isAuthenticated()" 					 />
+	
+	<form-login 
+			login-page="/login"
+			default-target-url="/home"
+			password-parameter="password"
+			username-parameter="username"
+			authentication-failure-url="/login?error" 
+			login-processing-url="/j_security_check"
+			/>
+			
+			<csrf disabled="true" />
+	<logout logout-success-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID" /> 
+	</http>
+
+	<!-- Authentication manager -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="customUserDetailsService">
+			<password-encoder hash="bcrypt" ref="encoder"></password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<beans:bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<beans:constructor-arg name="strength" value="11" />
+	</beans:bean>
+
+	<beans:bean id="customUserDetailsService"
+		class="br.com.sistema.seguranca.CustomUserDetailsService">
+	</beans:bean>
+
+</beans:beans>

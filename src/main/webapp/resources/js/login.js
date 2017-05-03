@@ -1,6 +1,5 @@
 $(document).ready(
 		function() {
-
 			$(function() {
 
 				$('#login-form-link').click(function(e) {
@@ -18,6 +17,19 @@ $(document).ready(
 					e.preventDefault();
 				});
 
+				$("#register-submit").click(function(e) {
+					NProgress.start();
+					$('#register-form').attr('action', '/monetize/salvarUsuario');
+					$('#register-form').submit();
+					NProgress.done();
+				});
+				
+				$("#login-submit").click(function(e) {
+					NProgress.start();
+					$('#login-form').attr('action', '/monetize/j_security_check');
+					$('#login-form').submit();
+					NProgress.done();
+				});
 			});
 
 			$.validator.setDefaults({
