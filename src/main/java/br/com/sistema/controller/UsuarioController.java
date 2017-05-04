@@ -1,5 +1,8 @@
 package br.com.sistema.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,7 +12,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -25,49 +32,57 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
+import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.seguranca.CustomUserDetailsService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
 @Controller
 public class UsuarioController extends BaseController {
-	
+
 	@Autowired
-	  @Qualifier("authenticationManager")
-	  AuthenticationManager authenticationManager;
-	
+	CustomUserDetailsService customUserDetailsService;
+
 	@Autowired
 	private br.com.sistema.service.UsuarioService service;
-	
+
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
 		model.addAttribute("usuario", getPrincipal());
 		return "/credenciais.jsp";
 	}
-	
-	  
-	  @RequestMapping(method = RequestMethod.GET, value="/login")
-	  public ModelAndView login(
-		  @RequestParam(value = "error", required = false) String error,
-		  @RequestParam(value = "logout", required = false) String logout,
-		  HttpServletRequest request) {
-			  ModelAndView model = new ModelAndView();
-			  model.addObject("usuario", new Usuario());
-			  if(error!=null){
-				  model.addObject("mensagem", new Mensagem( getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
-			  }
-			  model.setViewName("/credenciais.jsp");
-			  return model;
-	  }
-	  
-	  @RequestMapping(value = { "/registrarUsuario" }, method = RequestMethod.GET)
-	  public ModelAndView carregarPaginaCadastro(Model model) {
-		  Usuario usuario = new Usuario();
-		  model.addAttribute("usuario", usuario);
-		  return new ModelAndView("/registro.jsp");
-	  }
-	
-	
+
+
+	@RequestMapping(method = RequestMethod.GET, value="/login")
+	public ModelAndView login(
+			@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout,
+			HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+		model.addObject("usuario", new Usuario());
+		if(error!=null){
+			model.addObject("mensagem", new Mensagem( getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
+		}
+		model.setViewName("/credenciais.jsp");
+		return model;
+	}
+
+	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
+	public ModelAndView home(Model model) {
+		return new ModelAndView("home");
+	}
+
+
+	/**
+	 * Mudar para:
+	 * quando receber parâmetros de sucesso, logar, ao encontrar erros, enviar mensagem de erro no
+	 * "mesmo formulário".
+	 * @param usuario
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
 	public String executarRegistro(Usuario usuario, Model model, HttpServletRequest req){
 		try {
@@ -75,15 +90,27 @@ public class UsuarioController extends BaseController {
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("mensagem", new Mensagem("Sucesso ao cadastrar o usuário.", TipoMensagem.SUCESSO));
 
+			Usuario principal =
+					service.findByLogin(usuario.getUsername());
+
+			SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+			Authentication auth =
+					new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(), getGrantedAuthorities(usuario));
+			context.setAuthentication(auth);
+
 		} catch (BusinessException e) {
 			model.addAttribute("mensagem", new Mensagem(e.getMessage(), TipoMensagem.ERRO));
+			return "/credenciais.jsp";
 		} catch (ApplicationException ex) {
 			model.addAttribute("mensagem", new Mensagem(ex.getMessage(), TipoMensagem.ERRO));
+			return "/credenciais.jsp";
 		}
-		return "S/registro.jsp";
+		return "home";
 	}
 
 	
+
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
 		HttpHeaders headers = new HttpHeaders();
@@ -96,9 +123,9 @@ public class UsuarioController extends BaseController {
 		} catch (ApplicationException ex) {
 			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
 		}
-		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}
-	
+
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
@@ -107,18 +134,27 @@ public class UsuarioController extends BaseController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 
 		}
-		return "/credenciais.jsp";
+		return "redirect:/login?logout";
 	}
-	
-		private String getErrorMessage(HttpServletRequest request, String key) {
-			Exception exception = (Exception) request.getSession().getAttribute(key);
-			String error = "";
-			if(exception!=null && !exception.equals("")){
-				error = exception.getMessage();
-			}
 
-			return error;
+	private String getErrorMessage(HttpServletRequest request, String key) {
+		Exception exception = (Exception) request.getSession().getAttribute(key);
+		String error = "";
+		if(exception!=null && !exception.equals("")){
+			error = exception.getMessage();
 		}
-		
-		 
+
+		return error;
+	}
+	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+		for (PerfilUsuario userProfile : user.getPerfisUsuario()) {
+			System.out.println("UserProfile : " + userProfile);
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getTipoPerfil().getPerfil()));
+		}
+		System.out.print("authorities :" + authorities);
+		return authorities;
+	}
+
 }

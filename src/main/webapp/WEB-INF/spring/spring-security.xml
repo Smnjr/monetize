@@ -27,9 +27,7 @@
 			authentication-failure-url="/login?error" 
 			login-processing-url="/j_security_check"
 			/>
-			
 			<csrf disabled="true" />
-	<logout logout-success-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID" /> 
 	</http>
 
 	<!-- Authentication manager -->
