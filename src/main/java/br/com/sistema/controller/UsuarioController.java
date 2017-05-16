@@ -7,11 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,6 +33,7 @@ import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.seguranca.CustomUserDetailsService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
@@ -83,8 +83,10 @@ public class UsuarioController extends BaseController {
 	 * @param req
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
-	public String executarRegistro(Usuario usuario, Model model, HttpServletRequest req){
+	public ResponseEntity<Void> executarRegistro(@RequestBody UsuarioVO usuario, Model model) {
+		HttpHeaders headers = new HttpHeaders();
 		try {
 			service.create(usuario);
 			model.addAttribute("usuario", usuario);
@@ -96,17 +98,18 @@ public class UsuarioController extends BaseController {
 			SecurityContext context = SecurityContextHolder.createEmptyContext();
 
 			Authentication auth =
-					new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(), getGrantedAuthorities(usuario));
+					new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(),
+							getGrantedAuthorities(principal));
 			context.setAuthentication(auth);
 
 		} catch (BusinessException e) {
 			model.addAttribute("mensagem", new Mensagem(e.getMessage(), TipoMensagem.ERRO));
-			return "/credenciais.jsp";
+			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
 			model.addAttribute("mensagem", new Mensagem(ex.getMessage(), TipoMensagem.ERRO));
-			return "/credenciais.jsp";
+			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return "home";
+		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}
 
 	

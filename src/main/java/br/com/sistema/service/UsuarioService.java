@@ -5,10 +5,11 @@ import java.util.List;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.model.UsuarioVO;
 
 public interface UsuarioService {
 
-	public void create(Usuario usuario) throws BusinessException, ApplicationException;
+	public void create(UsuarioVO usuario) throws BusinessException, ApplicationException;
 
 	public void update(Usuario u) throws BusinessException, ApplicationException;
 

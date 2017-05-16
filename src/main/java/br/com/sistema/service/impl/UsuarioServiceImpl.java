@@ -17,6 +17,7 @@ import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.model.enums.TipoPerfil;
 import br.com.sistema.repository.UserProfileRepository;
 import br.com.sistema.repository.UsuarioRepository;
@@ -43,8 +44,11 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 	MessageSource messageSource;
 	
 	@Transactional
-	public void create(Usuario usuario) throws BusinessException, ApplicationException {
+	public void create(UsuarioVO usuarioVO) throws BusinessException, ApplicationException {
 		try {
+
+			Usuario usuario = getUsuario(usuarioVO);
+
 			validarPreenchimentoNome(usuario.getUsername());
 			validarPreenchimentoEmail(usuario.getEmail());
 			validarComposicaoEmail(usuario.getEmail());
@@ -70,6 +74,15 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 		}
 	}
 
+	private Usuario getUsuario(UsuarioVO usuarioVO) {
+		Usuario usuario = new Usuario();
+		usuario.setUsername(usuarioVO.getUsername());
+		usuario.setEmail(usuarioVO.getEmail());
+		usuario.setPassword(usuarioVO.getPassword());
+		usuario.setConfirmacaoSenha(usuarioVO.getConfirmacaoSenha());
+		return usuario;
+	}
+
 	@Transactional
 	public void update(Usuario u) throws BusinessException, ApplicationException {
 		usuarioRepository.update(u);
@@ -89,7 +102,7 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 
 	
 	@Transactional(readOnly = true)
-	private void validarUsuarioExistente(Usuario usuario) throws BusinessException, ApplicationException{
+	private void validarUsuarioExistente(Usuario usuario) throws BusinessException, ApplicationException {
 		Usuario user = usuarioRepository.findByNameAndEmail(usuario.getUsername(), usuario.getEmail());
 		if (user != null && user.getId() != null) {
 			if (user.getUsername().equals(usuario.getUsername())) {

@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Monetize</title> 
-	<script type="text/javascript" src="resources/jquery/jquery-3.1.1.min.js"> </script>
+	<script  type="text/javascript" src="resources/jquery/jquery-3.1.1.min.js"> </script>
 	<script type="text/javascript" src="resources//bootstrap/js/bootstrap.js"> </script>
 	<script type="text/javascript" src="resources//jquery-validation/jquery.validate.js"> </script>
 	<script type="text/javascript" src="resources/jquery-validation/localization/messages_pt_BR.js"> </script>
@@ -21,7 +21,7 @@
 	<input type="hidden" id="mensagem" value="${mensagem.texto}" />
 
 	<div class="container">
-		<div class="${mensagem.tipoMensagem.classeCss}" role="alert">
+		<div id="errorMessage" class="${mensagem.tipoMensagem.classeCss}" role="alert">
 				${mensagem.texto}
 			</div>
 		<div class="container">
