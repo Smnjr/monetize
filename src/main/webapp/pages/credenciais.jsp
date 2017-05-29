@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Monetize</title> 
-	<script  type="text/javascript" src="resources/jquery/jquery-3.1.1.min.js"> </script>
+	<script  type="text/javascript" src="resources/jquery/jquery-3.2.1.js"> </script>
 	<script type="text/javascript" src="resources//bootstrap/js/bootstrap.js"> </script>
 	<script type="text/javascript" src="resources//jquery-validation/jquery.validate.js"> </script>
 	<script type="text/javascript" src="resources/jquery-validation/localization/messages_pt_BR.js"> </script>
@@ -23,8 +23,7 @@
 	<div class="container">
 		<div id="errorMessage" class="${mensagem.tipoMensagem.classeCss}" role="alert">
 				${mensagem.texto}
-			</div>
-		<div class="container">
+		</div>
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
 					<div class="panel panel-login">
@@ -119,7 +118,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 	
 </html>

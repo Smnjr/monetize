@@ -20,7 +20,7 @@ import br.com.sistema.service.UsuarioService;
 
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private static final Logger LOGGER = Logger.getLogger(CustomUserDetailsService.class);
+	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
 
 	@Autowired
 	MessageSource messageSource;
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		LOGGER.debug("Authenticating user with username={" + username + "}");
+		logger.debug("Autenticando o usuario={" + username + "}");
 		Usuario usuario = userService.findByLogin(username);
 		validaUsuario(usuario);
 		return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, getGrantedAuthorities(usuario));

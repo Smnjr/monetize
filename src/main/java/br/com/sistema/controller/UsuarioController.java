@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,8 @@ public class UsuarioController extends BaseController {
 
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
+	
+	private static final Logger logger = Logger.getLogger(UsuarioController.class);
 
 	@Autowired
 	private br.com.sistema.service.UsuarioService service;
@@ -59,6 +62,7 @@ public class UsuarioController extends BaseController {
 			@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout,
 			HttpServletRequest request) {
+		logger.debug("Iniciando o login do usuario...");
 		ModelAndView model = new ModelAndView();
 		model.addObject("usuario", new Usuario());
 		if(error!=null){
@@ -76,7 +80,7 @@ public class UsuarioController extends BaseController {
 
 	/**
 	 * Mudar para:
-	 * quando receber parâmetros de sucesso, logar, ao encontrar erros, enviar mensagem de erro no
+	 * quando receber parametros de sucesso, logar, ao encontrar erros, enviar mensagem de erro no
 	 * "mesmo formulário".
 	 * @param usuario
 	 * @param model
@@ -88,6 +92,7 @@ public class UsuarioController extends BaseController {
 	public ResponseEntity<Void> executarRegistro(@RequestBody UsuarioVO usuario, Model model) {
 		HttpHeaders headers = new HttpHeaders();
 		try {
+			logger.debug("Salvando o usuario "+ usuario.getUsername());
 			service.create(usuario);
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("mensagem", new Mensagem("Sucesso ao cadastrar o usuário.", TipoMensagem.SUCESSO));
