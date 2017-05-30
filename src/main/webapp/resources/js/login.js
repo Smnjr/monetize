@@ -1,27 +1,20 @@
 $(function() {
 				$('#login-form-link').click(function(e) {
-					("#errorMessage").detach();
-					$("#login-form").delay(100).fadeIn(100);
-					$("#register-form").fadeOut(100);
+					$('#errorMessage').remove();
+					$('#login-form').delay(100).fadeIn(100);
+					$('#register-form').fadeOut(100);
 					$('#register-form-link').removeClass('active');
 					$(this).addClass('active');
 					e.preventDefault();
 				});
 				
 				$('#register-form-link').click(function(e) {
-					("#errorMessage").detach();
-					$("#register-form").delay(100).fadeIn(100);
-					$("#login-form").fadeOut(100);
+					$('#errorMessage').remove();
+					$('#register-form').delay(100).fadeIn(100);
+					$('#login-form').fadeOut(100);
 					$('#login-form-link').removeClass('active');
 					$(this).addClass('active');
 					e.preventDefault();
-				});
-	
-				$("#register-submit").click(function(e) {
-					NProgress.start();
-					e.preventDefault();
-					saveUsuario();
-					NProgress.done();
 				});
 	
 	
@@ -45,7 +38,7 @@ $(function() {
 					}
 				});
 	
-				$("#login-form").validate({
+				$('#login-form').validate({
 					submitHandler: function() {
 						NProgress.start();
 						$('#login-form').attr('action', '/monetize/j_security_check');
@@ -56,38 +49,44 @@ $(function() {
 					rules : {
 						username : {
 							required : true,
-							minlength : 2,
+							minlength : 5,
 							maxlength : 20
 						},
 						password : {
 							required : true,
-							minlength : 2,
+							minlength : 5,
 							maxlength : 20
 						}
 					},
 				});
 	
-				$("#register-form").validate({
-			
+				$('#register-form').validate({
+					submitHandler: function() {
+						NProgress.start();
+						alert("submitted");
+						//saveUsuario();
+						NProgress.done();
+					},
+					
 					rules : {
 						username:{
 							required:true,
-							minlength:2,
+							minlength: 5,
 							maxlength: 20
 						},
 						email:{
 							required:true,
-							minlength:2,
+							minlength: 10,
 							maxlength: 30
 						},
 						pass:{
 							required:true,
-							minlength:2,
-							maxlength: 20,
+							minlength: 5,
+							maxlength: 20
 						},
 						confirmacaoSenha:{
 							required:true,
-							minlength:2,
+							minlength: 5,
 							maxlength: 20,
 							equalTo: "#pass"
 						},
@@ -97,7 +96,6 @@ $(function() {
 							equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
 						}
 					}
-			
 				});
 				
 				function display(data) {
@@ -113,24 +111,24 @@ $(function() {
 					usuario["password"] = $("#password").val();
 					usuario["confirm-password"] = $("#confirm-password").val();
 			
-					$.ajax({
-						type : "POST",
-						contentType : "application/json",
-						url : "/monetize/salvarUsuario",
-						data : JSON.stringify(usuario),
-						dataType : 'json',
-						timeout : 100000,
-						success : function(data) {
-							console.log("SUCCESS: ", data);
-							display(data);
-						},
-						error : function(e) {
-							console.log("ERROR: ", e);
-							display(e);
-						},
-						done : function(e) {
-							console.log("DONE");
-						}
-					});
-				}
+						$.ajax({
+							type : "POST",
+							contentType : "application/json",
+							url : "/monetize/salvarUsuario",
+							data : JSON.stringify(usuario),
+							dataType : 'json',
+							timeout : 100000,
+							success : function(data) {
+								console.log("SUCCESS: ", data);
+								display(data);
+							},
+							error : function(e) {
+								console.log("ERROR: ", e);
+								display(e);
+							},
+							done : function(e) {
+								console.log("DONE");
+							}
+						});
+					}
   			  });
