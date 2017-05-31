@@ -63,8 +63,7 @@ $(function() {
 				$('#register-form').validate({
 					submitHandler: function() {
 						NProgress.start();
-						alert("submitted");
-						//saveUsuario();
+						saveUsuario();
 						NProgress.done();
 					},
 					
@@ -106,10 +105,10 @@ $(function() {
 	
 				function saveUsuario() {
 					var usuario = {}
-					usuario["username"] = $("#username").val();
+					usuario["username"] = $("#user").val();
 					usuario["email"] = $("#email").val();
-					usuario["password"] = $("#password").val();
-					usuario["confirm-password"] = $("#confirm-password").val();
+					usuario["password"] = $("#pass").val();
+					usuario["confirmacaoSenha"] = $("#confirmPassword").val();
 			
 						$.ajax({
 							type : "POST",

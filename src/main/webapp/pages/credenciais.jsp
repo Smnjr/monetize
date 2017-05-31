@@ -43,17 +43,18 @@
 								<div class="col-lg-12">
 									<form id="login-form" method="POST" role=form
 										autocomplete="off" style="display: block;">
+										
 										<div class="form-group">
 											<label for="username" class="col-sm-2 control-label"></label>
 											<input type="text" name="username" id="username" tabindex="1"
 												class="form-control" placeholder="Nome do usuário"
-												minlength="2" maxlength="20" required>
+												minlength="5" maxlength="20" required>
 										</div>
 
 										<div class="form-group">
 											<label for="password" class="col-sm-2 control-label"></label>
 											<input type="password" name="password" id="password"
-												tabindex="2" class="form-control" placeholder="Senha"
+												tabindex="5" class="form-control" placeholder="Senha"
 												autocomplete="off" minlength="2" maxlength="20" required>
 										</div>
 
@@ -73,39 +74,40 @@
 											</div>
 										</div>
 									</form>
+									
 									<form id="register-form" name="registerForm" role="form"
 										style="display: none;" method="post">
 										<div class="form-group">
-											<input type="text" name="username" tabindex="1" id="username"
+											<input type="text" name="username" tabindex="1" id="user"
 												placeholder="Nome do usuário" class="form-control"
-												minlength="2" maxlength="20" required />
+												minlength="5" maxlength="20" required />
 										</div>
 
 										<div class="form-group">
 											<input type="email" name="email" id="email"
-												class="form-control" tabindex="1" placeholder="Email"
+												class="form-control" tabindex="2" placeholder="Email"
 												required />
 										</div>
 
 										<div class="form-group">
 											<input type="password" name="password" id="pass"
-												class="form-control" autocomplete="off" tabindex="2"
-												placeholder="Senha" minlength="2" maxlength="20" required />
+												class="form-control" autocomplete="off" tabindex="3"
+												placeholder="Senha" minlength="5" maxlength="20" required />
 										</div>
 
 										<div class="form-group">
 											<input type="password" name="confirmacaoSenha"
-												id="confirm-password" class="form-control"
-												autocomplete="off" tabindex="2"
-												placeholder="Confirmação de senha" minlength="2"
+												id="confirmPassword" class="form-control"
+												autocomplete="off" tabindex="4"
+												placeholder="Confirmação de senha" minlength="5"
 												maxlength="20" required />
 										</div>
 
 										<div class="form-group">
 											<div class="row">
 												<div class="col-sm-6 col-sm-offset-3">
-													<input name="register-submit" id="register-submit"
-														tabindex="4" class="form-control btn btn-register"
+													<input name="register-submit" id="register-submit" type="submit"
+														tabindex="5" class="form-control btn btn-register"
 														value="Salvar">
 												</div>
 											</div>
