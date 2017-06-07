@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -35,7 +37,6 @@ import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.model.UsuarioVO;
-import br.com.sistema.seguranca.CustomUserDetailsService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
@@ -43,8 +44,11 @@ import br.com.sistema.util.TipoMensagem;
 public class UsuarioController extends BaseController {
 
 	@Autowired
-	CustomUserDetailsService customUserDetailsService;
-	
+	RequestCache requestCache;
+
+	@Autowired
+	protected AuthenticationManager authenticationManager;
+
 	private static final Logger logger = Logger.getLogger(UsuarioController.class);
 
 	@Autowired
@@ -89,35 +93,28 @@ public class UsuarioController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<Void> executarRegistro(@RequestBody UsuarioVO usuario, Model model) {
+	public ResponseEntity<Void> executarRegistro(@RequestBody UsuarioVO usuario, HttpServletRequest request) {
 		HttpHeaders headers = new HttpHeaders();
 		try {
 			logger.debug("Salvando o usuario "+ usuario.getUsername());
 			service.create(usuario);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("mensagem", new Mensagem("Sucesso ao cadastrar o usuário.", TipoMensagem.SUCESSO));
-
-			Usuario principal =
-					service.findByLogin(usuario.getUsername());
-
+			efetuarLogin(usuario, request);
+			Usuario principal = service.findByLogin(usuario.getUsername());
 			SecurityContext context = SecurityContextHolder.createEmptyContext();
-
-			Authentication auth =
-					new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(),
-							getGrantedAuthorities(principal));
+			Authentication auth = new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(),
+					getGrantedAuthorities(principal));
 			context.setAuthentication(auth);
+			ModelAndView model = new ModelAndView("home");
 
 		} catch (BusinessException e) {
-			model.addAttribute("mensagem", new Mensagem(e.getMessage(), TipoMensagem.ERRO));
 			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
-			model.addAttribute("mensagem", new Mensagem(ex.getMessage(), TipoMensagem.ERRO));
 			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}
 
-	
+
 
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
