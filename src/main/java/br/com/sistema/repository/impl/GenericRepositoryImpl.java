@@ -34,6 +34,7 @@ public abstract class GenericRepositoryImpl<T> implements GenericRepository<T> {
 		try {
 			getSession().save(t);
 			sessionFactory.getCurrentSession().flush();
+
 		} catch (Exception e) {
 			logger.error("Erro ao criar sessão " + e.getMessage());
 			throw new ApplicationException(messages.getString("create.error"), e);

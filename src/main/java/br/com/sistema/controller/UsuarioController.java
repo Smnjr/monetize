@@ -16,8 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
-import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.util.Mensagem;
@@ -83,9 +82,9 @@ public class UsuarioController extends BaseController {
 
 
 	/**
-	 * Mudar para:
-	 * quando receber parametros de sucesso, logar, ao encontrar erros, enviar mensagem de erro no
-	 * "mesmo formulário".
+	 * Mudar para: quando receber parametros de sucesso, logar, ao encontrar
+	 * erros, enviar mensagem de erro no "mesmo formulário".
+	 * 
 	 * @param usuario
 	 * @param model
 	 * @param req
@@ -93,28 +92,35 @@ public class UsuarioController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<Void> executarRegistro(@RequestBody UsuarioVO usuario, HttpServletRequest request) {
-		HttpHeaders headers = new HttpHeaders();
+	public ModelAndView executarRegistro(@RequestBody UsuarioVO usuario, HttpServletRequest request, Model model) {
 		try {
 			logger.debug("Salvando o usuario "+ usuario.getUsername());
 			service.create(usuario);
 			efetuarLogin(usuario, request);
-			Usuario principal = service.findByLogin(usuario.getUsername());
-			SecurityContext context = SecurityContextHolder.createEmptyContext();
-			Authentication auth = new UsernamePasswordAuthenticationToken(principal, usuario.getPassword(),
-					getGrantedAuthorities(principal));
-			context.setAuthentication(auth);
-			ModelAndView model = new ModelAndView("home");
 
 		} catch (BusinessException e) {
 			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
 			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(headers, HttpStatus.OK);
+		return home(model);
 	}
 
 
+
+	private void efetuarLogin(UsuarioVO usuario, HttpServletRequest request) throws ApplicationException {
+		try {
+			Usuario principal = service.findByLogin(usuario.getUsername());
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(),
+					getGrantedAuthorities(principal));
+			request.getSession();
+			token.setDetails(new WebAuthenticationDetails(request));
+			Authentication authenticatedUser = authenticationManager.authenticate(token);
+			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+		} catch (Exception e) {
+			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+		}
+	}
 
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
@@ -153,13 +159,7 @@ public class UsuarioController extends BaseController {
 	}
 	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-		for (PerfilUsuario userProfile : user.getPerfisUsuario()) {
-			System.out.println("UserProfile : " + userProfile);
-			authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getTipoPerfil().getPerfil()));
-		}
-		System.out.print("authorities :" + authorities);
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
 		return authorities;
+		}
 	}
-
-}

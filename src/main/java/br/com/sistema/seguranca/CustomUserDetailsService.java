@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
 
@@ -45,12 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-		for (PerfilUsuario userProfile : user.getPerfisUsuario()) {
-			System.out.println("UserProfile : " + userProfile);
-			authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getTipoPerfil().getPerfil()));
-		}
-		System.out.print("authorities :" + authorities);
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
 		return authorities;
 	}
 }

@@ -13,14 +13,14 @@ import br.com.sistema.model.enums.TipoPerfil;
 @Entity
 @Table(name="USER_PROFILE")
 public class PerfilUsuario {
-     
-    @Id
-    @GeneratedValue
-    private Integer id;
-     
-    @Enumerated(EnumType.STRING)
+
+	@Id
+	@GeneratedValue
+	private Integer id;
+
+	@Enumerated(EnumType.STRING)
 	@Column(name = "TIPO_PERFIL", columnDefinition = "varchar(10)")
-    private TipoPerfil tipoPerfil;
+	private TipoPerfil tipoPerfil;
 
 	/**
 	 * @return the tipoPerfil
@@ -35,7 +35,5 @@ public class PerfilUsuario {
 	public void setTipoPerfil(TipoPerfil tipoPerfil) {
 		this.tipoPerfil = tipoPerfil;
 	}
-     
- 
-     
+
 }

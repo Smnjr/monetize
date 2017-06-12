@@ -2,17 +2,14 @@ package br.com.sistema.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -55,11 +52,9 @@ public class Usuario implements Serializable{
 	private Pessoa pessoa;
 	
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="USUARIO_PERFIL_USUARIO",
-        joinColumns = {@JoinColumn(name="usuario_id")},
-        inverseJoinColumns = {@JoinColumn(name="user_profile_id")})
-	private List<PerfilUsuario> perfisUsuario;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "USUARIO_ID")
+	private PerfilUsuario perfilUsuario;
 
 	public Integer getId() {
 		return id;
@@ -125,16 +120,17 @@ public class Usuario implements Serializable{
 		this.pessoa = pessoa;
 	}
 
-	public List<PerfilUsuario> getPerfisUsuario() {
-		return perfisUsuario;
-	}
-
-	public void setPerfisUsuario(List<PerfilUsuario> perfisUsuario) {
-		this.perfisUsuario = perfisUsuario;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public PerfilUsuario getPerfilUsuario() {
+		return perfilUsuario;
+	}
+
+	public void setPerfilUsuario(PerfilUsuario perfilUsuario) {
+		this.perfilUsuario = perfilUsuario;
+	}
+
 
 }
