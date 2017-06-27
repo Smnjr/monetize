@@ -16,7 +16,9 @@ public interface UsuarioService {
 	public void delete(Usuario u) throws BusinessException, ApplicationException;
 
 	public List<Usuario> findAll() throws BusinessException, ApplicationException;
+
+	public void validarUsername(String userName) throws BusinessException, ApplicationException;
 	
 	public Usuario findByLogin(String username) ;
-	
+
 }

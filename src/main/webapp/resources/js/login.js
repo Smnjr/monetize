@@ -62,8 +62,6 @@ $(function() {
 	
 				$('#register-form').validate({
 					submitHandler: function() {
-						NProgress.start();
-						saveUsuario();
 						NProgress.done();
 					},
 					
@@ -96,38 +94,41 @@ $(function() {
 						}
 					}
 				});
-				
+
+
+				$('#user').blur(function(e) {
+					var username = $("#username").val();
+					$ajax({
+						type: "POST",
+						contentType : "application/json",
+						data: JSON.stringify(username),
+						dataType: 'json',
+						url: '/monetize/validarUsuario',
+						success : function(data) {
+							console.log("SUCCESS: ", data);
+							display(data);
+							enableSearchButton(true);
+						},
+						error : function(e) {
+							console.log("ERROR: ", e);
+							display(e);
+							enableSearchButton(false);
+						},
+						done : function(e) {
+							console.log("DONE");
+							enableSearchButton(true);
+						}
+					});
+				});
+
+
 				function display(data) {
 					var json = "<h4>Ajax Response</h4><pre>"
 							+ JSON.stringify(data, null, 4) + "</pre>";
-					$('#errorMessage').html(json);
+					$('#feedback').html(json);
 				}
-	
-				function saveUsuario() {
-					var usuario = {}
-					usuario["username"] = $("#user").val();
-					usuario["email"] = $("#email").val();
-					usuario["password"] = $("#pass").val();
-					usuario["confirmacaoSenha"] = $("#confirmPassword").val();
-			
-						$.ajax({
-							type : "POST",
-							contentType : "application/json",
-							url : "/monetize/salvarUsuario",
-							data : JSON.stringify(usuario),
-							dataType : 'json',
-							timeout : 100000,
-							success : function(data) {
-								console.log("SUCCESS: ", data);
-								display(data);
-							},
-							error : function(e) {
-								console.log("ERROR: ", e);
-								display(e);
-							},
-							done : function(e) {
-								console.log("DONE");
-							}
-						});
-					}
-  			  });
+				
+				function enableSearchButton(flag) {
+					$("#register-submit").prop("disabled", flag);
+				}
+});

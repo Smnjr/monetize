@@ -53,7 +53,6 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 			validarPreenchimentoSenha(usuario.getPassword());
 			validarPreenchimentoConfirmacaoSenha(usuario.getConfirmacaoSenha());
 			validarComposicaoConfirmacaoSenha(usuario.getPassword(), usuario.getConfirmacaoSenha());
-			validarUsuarioExistente(usuario);
 	
 			PerfilUsuario profileUser = new PerfilUsuario();
 			profileUser = getPerfilUser();
@@ -93,16 +92,11 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 		return usuarioRepository.findByLogin(username);
 	}
 
-	
-
-	
 	@Transactional(readOnly = true)
-	private void validarUsuarioExistente(Usuario usuario) throws BusinessException, ApplicationException {
-		Usuario user = usuarioRepository.findByNameAndEmail(usuario.getUsername(), usuario.getEmail());
-		if (user != null && user.getId() != null) {
-			if (user.getUsername().equals(usuario.getUsername())) {
-				throw new BusinessException(messageSource.getMessage("usuario.exist", null, ptBR), TipoMensagem.AVISO);
-			}
+	public void validarUsername(String userName) throws BusinessException, ApplicationException {
+		Usuario user = usuarioRepository.findByLogin(userName);
+		if (user != null) {
+			throw new BusinessException(messageSource.getMessage("usuario.exist", null, ptBR), TipoMensagem.AVISO);
 		}
 	}
 

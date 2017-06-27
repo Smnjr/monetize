@@ -94,7 +94,7 @@ public class UsuarioController extends BaseController {
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
 	public ModelAndView executarRegistro(@RequestBody UsuarioVO usuario, HttpServletRequest request, Model model) {
 		try {
-			logger.debug("Salvando o usuario "+ usuario.getUsername());
+			logger.debug("Salvando o usuario " + usuario.getUsername());
 			service.create(usuario);
 			efetuarLogin(usuario, request);
 
@@ -105,8 +105,6 @@ public class UsuarioController extends BaseController {
 		}
 		return home(model);
 	}
-
-
 
 	private void efetuarLogin(UsuarioVO usuario, HttpServletRequest request) throws ApplicationException {
 		try {
@@ -121,6 +119,8 @@ public class UsuarioController extends BaseController {
 			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
 	}
+
+
 
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
@@ -157,9 +157,29 @@ public class UsuarioController extends BaseController {
 
 		return error;
 	}
+
 	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
 		return authorities;
-		}
 	}
+
+	@ResponseBody
+	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
+	public ResponseEntity<Void> validarUsuario(@RequestBody UsuarioVO usuario, HttpServletRequest request,
+			Model model) {
+		HttpHeaders headers = new HttpHeaders();
+		String username = usuario.getUsername().trim();
+		logger.info("Validando o login do usuario " + username);
+
+		try {
+			service.validarUsername(username);
+		} catch (BusinessException e) {
+			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		} catch (ApplicationException ex) {
+			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(headers, HttpStatus.OK);
+	}
+
+}
