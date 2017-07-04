@@ -8,39 +8,54 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.sistema.dao.GenericDao;
+import br.com.sistema.dao.UsuarioDao;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.PerfilUsuario;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.model.UsuarioVO;
-import br.com.sistema.repository.UserProfileRepository;
-import br.com.sistema.repository.UsuarioRepository;
+import br.com.sistema.service.PerfilUsuarioService;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.GenerateHashPasswordUtil;
 import br.com.sistema.util.TipoMensagem;
 
 @Service("usuarioService")
 @Transactional
-public class UsuarioServiceImpl implements UsuarioService, Serializable {
+public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> implements UsuarioService, Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -1214898444983560348L;
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+
+	private UsuarioDao usuarioDao;
+
+	private UsuarioServiceImpl() {
+
+	}
 
 	@Autowired
-	UserProfileRepository userProfileRepository;
+	private PerfilUsuarioService perfilUsuarioService;
+
+	@Autowired
+	public UsuarioServiceImpl(@Qualifier("usuarioDaoImpl") GenericDao<Usuario, Integer> genericDao) {
+		super(genericDao);
+		this.usuarioDao = (UsuarioDao) genericDao;
+	}
+
+	static final Integer USER = 1;
 
 	Locale ptBR = new Locale("pt", "BR");
-	
+
 	@Autowired
 	MessageSource messageSource;
-	
+
+	@Override
 	@Transactional
 	public void create(UsuarioVO usuarioVO) throws BusinessException, ApplicationException {
 		try {
@@ -53,16 +68,16 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 			validarPreenchimentoSenha(usuario.getPassword());
 			validarPreenchimentoConfirmacaoSenha(usuario.getConfirmacaoSenha());
 			validarComposicaoConfirmacaoSenha(usuario.getPassword(), usuario.getConfirmacaoSenha());
-	
+
 			PerfilUsuario profileUser = new PerfilUsuario();
 			profileUser = getPerfilUser();
 			usuario.setPerfilUsuario(profileUser);
-	
+
 			usuario.setDataCadastro(new Date());
 			String passwordHash = GenerateHashPasswordUtil.generateHash(usuario.getPassword());
 			usuario.setPassword(passwordHash);
-	
-			usuarioRepository.create(usuario);
+
+			usuarioDao.save(usuario);
 		} catch (BusinessException ex) {
 			throw new BusinessException(ex.getMessage(), ex, ex.getTipoMensagem(), messageSource.getMessage("create.error", null, ptBR));
 		}
@@ -77,24 +92,28 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 		return usuario;
 	}
 
+	@Override
 	@Transactional
-	public void update(Usuario u) throws BusinessException, ApplicationException {
-		usuarioRepository.update(u);
+	public void update(Usuario u) throws ApplicationException {
+		usuarioDao.update(u);
 	}
 
+	@Override
 	@Transactional
-	public void delete(Usuario u) throws BusinessException, ApplicationException {
-		usuarioRepository.delete(u);
+	public void delete(Usuario u) throws ApplicationException {
+		usuarioDao.delete(u);
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public Usuario findByLogin(String username){
-		return usuarioRepository.findByLogin(username);
+		return usuarioDao.findByLogin(username);
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public void validarUsername(String userName) throws BusinessException, ApplicationException {
-		Usuario user = usuarioRepository.findByLogin(userName);
+		Usuario user = usuarioDao.findByLogin(userName);
 		if (user != null) {
 			throw new BusinessException(messageSource.getMessage("usuario.exist", null, ptBR), TipoMensagem.AVISO);
 		}
@@ -138,21 +157,23 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 	}
 
 	private static boolean isEmailValid(String email) {
-		if ((email == null) || (email.trim().length() == 0))
+		if ((email == null) || (email.trim().length() == 0)) {
 			return false;
+		}
 
 		String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
 		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
+	@Override
 	@Transactional(readOnly = true)
-	public List<Usuario> findAll() throws BusinessException, ApplicationException {
-		return usuarioRepository.findAll();
+	public List<Usuario> findAll() throws ApplicationException {
+		return usuarioDao.findAll();
 	}
 
 	private PerfilUsuario getPerfilUser() throws ApplicationException {
-		return userProfileRepository.find(1L);
+		return perfilUsuarioService.find(USER);
 	}
 
 }

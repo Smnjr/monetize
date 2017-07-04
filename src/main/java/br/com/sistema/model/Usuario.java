@@ -1,13 +1,9 @@
 package br.com.sistema.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -21,45 +17,43 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "USUARIO")
-public class Usuario implements Serializable{
+public class Usuario extends BaseEntity<Integer> {
 	private static final long serialVersionUID = -7590317347612436291L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	
+
 	@Column(name = "username",  unique = true, nullable = false, length = 128)
 	private String username;
-	
+
 	@Column(name = "password",  unique = true, nullable = false, length = 100)
 	private String password;
-	
+
 	@Transient
 	private String confirmacaoSenha;
-	
+
 	@Column(name = "email", nullable = false, length = 128)
 	private String email;
-	
+
 	@Column(name="data_cadastro", nullable=false) @Temporal(TemporalType.TIMESTAMP)
 
 	private Date dataCadastro;
-	
+
 	@Column(name = "data_ultimo_login", nullable = true, length = 128)
 	private Date ultimoLogin;
-	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "usuario" )
 	private Pessoa pessoa;
-	
+
 	@JsonIgnore
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "USUARIO_ID")
 	private PerfilUsuario perfilUsuario;
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
