@@ -57,10 +57,8 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 
 	@Override
 	@Transactional
-	public void create(UsuarioVO usuarioVO) throws BusinessException, ApplicationException {
+	public void create(Usuario usuario) throws BusinessException, ApplicationException {
 		try {
-
-			Usuario usuario = getUsuario(usuarioVO);
 
 			validarPreenchimentoNome(usuario.getUsername());
 			validarPreenchimentoEmail(usuario.getEmail());

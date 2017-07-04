@@ -88,6 +88,12 @@
 			<version>${springsecurity.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
+
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -243,7 +249,7 @@
 				<version>3.3</version>
 				<configuration>
 					<source>${jdk.version}</source>
-               <target>${jdk.version}</target>
+					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>

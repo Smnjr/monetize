@@ -17,7 +17,7 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 
 	@Override
 	public Usuario findByNameAndEmail(String username, String email) throws ApplicationException {
-		Query q = currentSession().createQuery(("FROM Usuario u where u.username = ? and u.email=?"));
+		Query q = currentSession().createQuery("FROM Usuario u where u.username = ? and u.email=?");
 		q.setParameter(0, username);
 		q.setParameter(1, email);
 		return (Usuario) q.uniqueResult();
@@ -25,7 +25,7 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 
 	@Override
 	public Usuario findByLogin(String username)  {
-		Query q = currentSession().createQuery(("FROM Usuario u where u.username = ? "));
+		Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
 		q.setParameter(0, username);
 		return (Usuario) q.uniqueResult();
 	}

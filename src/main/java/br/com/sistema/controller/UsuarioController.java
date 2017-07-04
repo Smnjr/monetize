@@ -35,7 +35,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
-import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
@@ -84,7 +83,7 @@ public class UsuarioController extends BaseController {
 	/**
 	 * Mudar para: quando receber parametros de sucesso, logar, ao encontrar
 	 * erros, enviar mensagem de erro no "mesmo formulário".
-	 * 
+	 *
 	 * @param usuario
 	 * @param model
 	 * @param req
@@ -92,7 +91,7 @@ public class UsuarioController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
-	public ModelAndView executarRegistro(@RequestBody UsuarioVO usuario, HttpServletRequest request, Model model) {
+	public ModelAndView executarRegistro(Usuario usuario, HttpServletRequest request, Model model) {
 		try {
 			logger.debug("Salvando o usuario " + usuario.getUsername());
 			service.create(usuario);
@@ -106,7 +105,7 @@ public class UsuarioController extends BaseController {
 		return home(model);
 	}
 
-	private void efetuarLogin(UsuarioVO usuario, HttpServletRequest request) throws ApplicationException {
+	private void efetuarLogin(Usuario usuario, HttpServletRequest request) throws ApplicationException {
 		try {
 			Usuario principal = service.findByLogin(usuario.getUsername());
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(),
@@ -164,14 +163,13 @@ public class UsuarioController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<Void> validarUsuario(@RequestBody UsuarioVO usuario, HttpServletRequest request,
+	public ResponseEntity<Void> validarUsuario(@RequestBody String username, HttpServletRequest request,
 			Model model) {
 		HttpHeaders headers = new HttpHeaders();
-		String username = usuario.getUsername().trim();
 		logger.info("Validando o login do usuario " + username);
 
 		try {
-			service.validarUsername(username);
+			service.validarUsername(username.trim());
 		} catch (BusinessException e) {
 			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {

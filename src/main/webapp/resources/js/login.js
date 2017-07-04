@@ -14,6 +14,7 @@ $(function() {
 					$('#login-form').fadeOut(100);
 					$('#login-form-link').removeClass('active');
 					$(this).addClass('active');
+					enableSearchButton(true);
 					e.preventDefault();
 				});
 	
@@ -45,7 +46,7 @@ $(function() {
 						$('#login-form').submit();
 						NProgress.done();
 					},
-					
+
 					rules : {
 						username : {
 							required : true,
@@ -59,12 +60,15 @@ $(function() {
 						}
 					},
 				});
-	
+
 				$('#register-form').validate({
 					submitHandler: function() {
+						NProgress.start();
+						$('#register-form').attr('action', '/monetize/salvarUsuario');
+						$('#register-form').submit();
 						NProgress.done();
 					},
-					
+
 					rules : {
 						username:{
 							required:true,
@@ -97,28 +101,30 @@ $(function() {
 
 
 				$('#user').blur(function(e) {
-					var username = $("#username").val();
-					$ajax({
-						type: "POST",
-						contentType : "application/json",
-						data: JSON.stringify(username),
-						dataType: 'json',
-						url: '/monetize/validarUsuario',
-						success : function(data) {
-							console.log("SUCCESS: ", data);
-							display(data);
-							enableSearchButton(true);
-						},
-						error : function(e) {
-							console.log("ERROR: ", e);
-							display(e);
-							enableSearchButton(false);
-						},
-						done : function(e) {
-							console.log("DONE");
-							enableSearchButton(true);
-						}
-					});
+					var username = $("#user").val();
+					if(username.length > 4){
+						$.ajax({
+							type: "POST",
+							contentType : "application/json",
+							data: JSON.stringify(username),
+							dataType: 'json',
+							url: '/monetize/validarUsuario',
+
+							success : function(data) {
+								console.log("SUCCESS: ", data);
+								display(data);
+								enableSearchButton(true);
+							},
+							error : function(e) {
+								console.log("ERROR: ", e);
+								display(e);
+								enableSearchButton(false);
+							},
+							done : function(e) {
+								console.log("DONE");
+								enableSearchButton(true);
+							}
+						});}
 				});
 
 
