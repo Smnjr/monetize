@@ -129,8 +129,6 @@ public class UsuarioController extends BaseController {
 			service.update(usuario);
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("mensagem", new Mensagem("Sucesso ao alterar o usuário.", TipoMensagem.SUCESSO));
-		} catch (BusinessException e) {
-			model.addAttribute("mensagem", new Mensagem(e.getMessage(), e.getTipoMensagem()));
 		} catch (ApplicationException ex) {
 			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
 		}

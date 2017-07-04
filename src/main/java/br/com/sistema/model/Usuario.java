@@ -48,15 +48,6 @@ public class Usuario extends BaseEntity<Integer> {
 	@JoinColumn(name = "USUARIO_ID")
 	private PerfilUsuario perfilUsuario;
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getUsername() {
 		return username;

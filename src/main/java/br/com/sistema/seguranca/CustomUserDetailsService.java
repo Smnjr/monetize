@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
 
+@Qualifier("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
 	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
