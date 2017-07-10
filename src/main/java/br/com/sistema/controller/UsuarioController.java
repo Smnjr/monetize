@@ -35,6 +35,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
@@ -162,18 +163,17 @@ public class UsuarioController extends BaseController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<Void> validarUsuario(@RequestBody String username, HttpServletRequest request,
-			Model model) {
+	@RequestMapping(value = "/validarUsuario")
+	public ResponseEntity<?> validarUsuario(@RequestBody UsuarioVO usuario) {
 		HttpHeaders headers = new HttpHeaders();
-		logger.info("Validando o login do usuario " + username);
+		logger.info("Validando o login do usuario " + usuario.getUsername());
 
 		try {
-			service.validarUsername(username.trim());
+			service.validarUsername(usuario.getUsername().trim());
 		} catch (BusinessException e) {
-			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
-			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}

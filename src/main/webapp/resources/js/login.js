@@ -101,37 +101,39 @@ $(function() {
 
 
 				$('#user').blur(function(e) {
-					var username = $("#user").val();
-					if(username.length > 4){
+					var usuario = {}
+					 usuario ["username"] = $('#user').val();
+					if($('#user').val().length > 4){
 						$.ajax({
 							type: "POST",
 							contentType : "application/json",
-							data: JSON.stringify(username),
-							dataType: 'json',
 							url: '/monetize/validarUsuario',
+							data: JSON.stringify(usuario),
+							dataType: 'json',
 
 							success : function(data) {
-								console.log("SUCCESS: ", data);
+								console.log("SUCCESS:", data);
 								display(data);
-								enableSearchButton(true);
+								enableSearchButton(false);
 							},
 							error : function(e) {
 								console.log("ERROR: ", e);
 								display(e);
-								enableSearchButton(false);
+								enableSearchButton(true);
 							},
 							done : function(e) {
 								console.log("DONE");
-								enableSearchButton(true);
+								enableSearchButton(false);
 							}
-						});}
+						});
+					}
 				});
 
 
 				function display(data) {
-					var json = "<h4>Ajax Response</h4><pre>"
-							+ JSON.stringify(data, null, 4) + "</pre>";
-					$('#feedback').html(json);
+					var json = 
+						"<label>"+ JSON.stringify(data, null, 4)+"</label>"
+						$('#user').html(json);
 				}
 				
 				function enableSearchButton(flag) {
