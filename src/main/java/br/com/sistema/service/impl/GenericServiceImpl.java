@@ -1,8 +1,6 @@
 package br.com.sistema.service.impl;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,14 +13,10 @@ import br.com.sistema.service.GenericService;
 @Service
 public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
 
-	Locale ptBR = new Locale("pt", "BR");
-	ResourceBundle messages = ResourceBundle.getBundle("sistema", ptBR);
-
 	private GenericDao<E, K> genericDao;
 
 	public GenericServiceImpl(GenericDao<E, K> genericDao) {
 		this.genericDao = genericDao;
-
 	}
 
 	public GenericServiceImpl() {
@@ -32,7 +26,7 @@ public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveOrUpdate(E entitty) throws ApplicationException {
-		genericDao.save(entitty);
+		genericDao.saveOrUpdate(entitty);
 	}
 
 	@Override

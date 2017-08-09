@@ -18,26 +18,21 @@ import br.com.sistema.exception.ApplicationException;
 @Repository
 public abstract class GenericDaoImpl<E, K extends Serializable> implements GenericDao<E, K> {
 
-	Locale ptBR = new Locale("pt", "BR");
-	ResourceBundle messages = ResourceBundle.getBundle("sistema", ptBR);
-	Logger logger;
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 4053899609015410292L;
-
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	private Class<? extends E> daoType;
+	Locale ptBR = new Locale("pt", "BR");
+	ResourceBundle messages = ResourceBundle.getBundle("sistema", ptBR);
+
+	static final Logger logger = Logger.getLogger(GenericDaoImpl.class);
+
+	protected Class<? extends E> daoType;
 
 	@SuppressWarnings("unchecked")
 	public GenericDaoImpl() {
 		java.lang.reflect.Type t = getClass().getGenericSuperclass();
 		ParameterizedType pt = (ParameterizedType) t;
 		daoType = (Class) pt.getActualTypeArguments()[0];
-
 	}
 
 	protected Session currentSession() {
@@ -48,18 +43,17 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 	public void save(E entity) throws ApplicationException {
 		try {
 			currentSession().save(entity);
-			currentSession().flush();
 
 		} catch (Exception e) {
-			logger.error("Erro ao criar sessão " + e.getMessage());
+			logger.error("Erro ao salvar registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("create.error"), e);
 		}
 	}
 
+	@Override
 	public void saveOrUpdate(E entity) throws ApplicationException {
 		try {
 			currentSession().saveOrUpdate(entity);
-			currentSession().flush();
 		} catch (Exception e) {
 			logger.error("Erro ao atualizar registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("update.error"), e);
@@ -70,7 +64,6 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 	public void update(E entity) throws ApplicationException {
 		try {
 			currentSession().merge(entity);
-			currentSession().flush();
 		} catch (Exception e) {
 			logger.error("Erro ao atualizar registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("update.error"), e);
@@ -81,7 +74,6 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 	public void delete(E entity) throws ApplicationException {
 		try {
 			currentSession().delete(entity);
-			currentSession().flush();
 		} catch (Exception e) {
 			logger.error("Erro ao excluir registro " + e.getMessage());
 			throw new ApplicationException(messages.getString("delete.error"), e);
@@ -109,5 +101,4 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 			throw new ApplicationException(messages.getString("query.error"), e);
 		}
 	}
-
 }

@@ -1,12 +1,12 @@
 package br.com.sistema.service.impl;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -17,37 +17,29 @@ import br.com.sistema.dao.GenericDao;
 import br.com.sistema.dao.UsuarioDao;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
-import br.com.sistema.model.PerfilUsuario;
+import br.com.sistema.model.Perfil;
 import br.com.sistema.model.Usuario;
-import br.com.sistema.model.UsuarioVO;
-import br.com.sistema.service.PerfilUsuarioService;
+import br.com.sistema.model.enums.TipoPerfil;
+import br.com.sistema.service.PerfilService;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.GenerateHashPasswordUtil;
 import br.com.sistema.util.TipoMensagem;
 
-@Service("usuarioService")
-@Transactional
-public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> implements UsuarioService, Serializable {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -1214898444983560348L;
+@Service
+public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> implements UsuarioService {
+
+	static final Logger logger = Logger.getLogger(GenericServiceImpl.class);
 
 	private UsuarioDao usuarioDao;
 
-	private UsuarioServiceImpl() {
-
-	}
-
 	@Autowired
-	private PerfilUsuarioService perfilUsuarioService;
+	private PerfilService perfilUsuarioService;
 
 	@Autowired
 	public UsuarioServiceImpl(@Qualifier("usuarioDaoImpl") GenericDao<Usuario, Integer> genericDao) {
 		super(genericDao);
 		this.usuarioDao = (UsuarioDao) genericDao;
 	}
-
 	static final Integer USER = 1;
 
 	Locale ptBR = new Locale("pt", "BR");
@@ -67,7 +59,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 			validarPreenchimentoConfirmacaoSenha(usuario.getConfirmacaoSenha());
 			validarComposicaoConfirmacaoSenha(usuario.getPassword(), usuario.getConfirmacaoSenha());
 
-			PerfilUsuario profileUser = new PerfilUsuario();
+			Perfil profileUser = new Perfil();
 			profileUser = getPerfilUser();
 			usuario.setPerfilUsuario(profileUser);
 
@@ -77,17 +69,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 
 			usuarioDao.save(usuario);
 		} catch (BusinessException ex) {
+			logger.error("Erro ao salvar registro " + ex.getMessage());
 			throw new BusinessException(ex.getMessage(), ex, ex.getTipoMensagem(), messageSource.getMessage("create.error", null, ptBR));
 		}
-	}
-
-	private Usuario getUsuario(UsuarioVO usuarioVO) {
-		Usuario usuario = new Usuario();
-		usuario.setUsername(usuarioVO.getUsername());
-		usuario.setEmail(usuarioVO.getEmail());
-		usuario.setPassword(usuarioVO.getPassword());
-		usuario.setConfirmacaoSenha(usuarioVO.getConfirmacaoSenha());
-		return usuario;
 	}
 
 	@Override
@@ -111,8 +95,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	@Override
 	@Transactional(readOnly = true)
 	public void validarUsername(String userName) throws BusinessException, ApplicationException {
-		Usuario user = usuarioDao.findByLogin(userName);
-		if (user != null) {
+		if (usuarioDao.isUsernameExisting(userName)) {
 			throw new BusinessException(messageSource.getMessage("usuario.exist", null, ptBR), TipoMensagem.AVISO);
 		}
 	}
@@ -158,7 +141,6 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 		if ((email == null) || (email.trim().length() == 0)) {
 			return false;
 		}
-
 		String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
 		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(email);
@@ -170,8 +152,24 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 		return usuarioDao.findAll();
 	}
 
-	private PerfilUsuario getPerfilUser() throws ApplicationException {
-		return perfilUsuarioService.find(USER);
+	private Perfil getPerfilUser() throws ApplicationException {
+		Perfil perfil = perfilUsuarioService.find(USER);
+		perfil.setTipoPerfil(TipoPerfil.obterPorCodigo(USER));
+		return perfil;
+	}
+
+	@Override
+	public void verificarPerfisExistentes() throws ApplicationException {
+		if (perfilUsuarioService.findAll().size() == 0) {
+
+			Perfil perfilUser = new Perfil();
+			perfilUser.setTipoPerfil(TipoPerfil.ROLE_USER);
+			perfilUsuarioService.save(perfilUser);
+
+			Perfil perfilAdmin = new Perfil();
+			perfilAdmin.setTipoPerfil(TipoPerfil.ROLE_ADMIN);
+			perfilUsuarioService.save(perfilAdmin);
+		}
 	}
 
 }

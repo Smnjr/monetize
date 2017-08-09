@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
@@ -31,6 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private UsuarioService userService;
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.debug("Autenticando o usuario={" + username + "}");
 		Usuario usuario = userService.findByLogin(username);

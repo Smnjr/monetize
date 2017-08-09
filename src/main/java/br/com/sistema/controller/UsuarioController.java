@@ -36,6 +36,7 @@ import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.model.UsuarioVO;
+import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
@@ -48,28 +49,30 @@ public class UsuarioController extends BaseController {
 	@Autowired
 	protected AuthenticationManager authenticationManager;
 
-	private static final Logger logger = Logger.getLogger(UsuarioController.class);
+	static final Logger logger = Logger.getLogger(UsuarioController.class);
 
-	@Autowired
-	private br.com.sistema.service.UsuarioService service;
+	@Autowired(required = true)
+	private UsuarioService service;
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
 		model.addAttribute("usuario", getPrincipal());
+		try {
+			service.verificarPerfisExistentes();
+		} catch (ApplicationException e) {
+			logger.error(e.getMessage());
+		}
 		return "/credenciais.jsp";
 	}
 
-
-	@RequestMapping(method = RequestMethod.GET, value="/login")
-	public ModelAndView login(
-			@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout,
-			HttpServletRequest request) {
-		logger.debug("Iniciando o login do usuario...");
+	@RequestMapping(method = RequestMethod.GET, value = "/login")
+	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		model.addObject("usuario", new Usuario());
-		if(error!=null){
-			model.addObject("mensagem", new Mensagem( getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
+		if (error != null) {
+			model.addObject("mensagem",
+					new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
 		}
 		model.setViewName("/credenciais.jsp");
 		return model;
@@ -82,8 +85,7 @@ public class UsuarioController extends BaseController {
 
 
 	/**
-	 * Mudar para: quando receber parametros de sucesso, logar, ao encontrar
-	 * erros, enviar mensagem de erro no "mesmo formulário".
+	 * Efetua registro, loga em seguida.
 	 *
 	 * @param usuario
 	 * @param model
@@ -120,6 +122,11 @@ public class UsuarioController extends BaseController {
 		}
 	}
 
+	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
+		return authorities;
+	}
 
 
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
@@ -141,7 +148,6 @@ public class UsuarioController extends BaseController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
-
 		}
 		return "redirect:/login?logout";
 	}
@@ -152,30 +158,24 @@ public class UsuarioController extends BaseController {
 		if(exception!=null && !exception.equals("")){
 			error = exception.getMessage();
 		}
-
 		return error;
 	}
 
-	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
-		return authorities;
-	}
 
 	@ResponseBody
 	@RequestMapping(value = "/validarUsuario")
 	public ResponseEntity<?> validarUsuario(@RequestBody UsuarioVO usuario) {
 		HttpHeaders headers = new HttpHeaders();
-		logger.info("Validando o login do usuario " + usuario.getUsername());
-
+		logger.warn("Validando o login do usuario " + usuario.getUsername());
 		try {
 			service.validarUsername(usuario.getUsername().trim());
+			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch (BusinessException e) {
+			logger.info(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
-			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+			logger.error(ex + ex.getCause().getMessage());
+			return new ResponseEntity<>("Erro ao validar o usuario " + ex.getMessage(), HttpStatus.BAD_GATEWAY);
 		}
-		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}
-
 }

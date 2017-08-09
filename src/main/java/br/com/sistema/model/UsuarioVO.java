@@ -1,6 +1,6 @@
 package br.com.sistema.model;
 
-import org.codehaus.jackson.map.annotate.JsonView;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class UsuarioVO {
 

@@ -2,10 +2,11 @@ package br.com.sistema.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -44,10 +45,11 @@ public class Usuario extends BaseEntity<Integer> {
 	private Pessoa pessoa;
 
 	@JsonIgnore
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "USUARIO_ID")
-	private PerfilUsuario perfilUsuario;
-
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinTable(name = "USUARIO_PERFIL", joinColumns = {
+			@JoinColumn(name = "usuario_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "perfil_id", referencedColumnName = "id") })
+	private Perfil perfilUsuario;
 
 	public String getUsername() {
 		return username;
@@ -109,11 +111,11 @@ public class Usuario extends BaseEntity<Integer> {
 		return serialVersionUID;
 	}
 
-	public PerfilUsuario getPerfilUsuario() {
+	public Perfil getPerfilUsuario() {
 		return perfilUsuario;
 	}
 
-	public void setPerfilUsuario(PerfilUsuario perfilUsuario) {
+	public void setPerfilUsuario(Perfil perfilUsuario) {
 		this.perfilUsuario = perfilUsuario;
 	}
 

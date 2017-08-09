@@ -6,10 +6,12 @@ import br.com.sistema.model.Usuario;
 
 public interface UsuarioService extends GenericService<Usuario, Integer> {
 
-	public void create(Usuario usuario) throws BusinessException, ApplicationException;
+	void create(Usuario usuario) throws BusinessException, ApplicationException;
 
-	public void validarUsername(String userName) throws BusinessException, ApplicationException;
+	void validarUsername(String userName) throws BusinessException, ApplicationException;
 
-	public Usuario findByLogin(String username) ;
+	Usuario findByLogin(String username);
+
+	void verificarPerfisExistentes() throws ApplicationException;
 
 }

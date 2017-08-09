@@ -15,12 +15,12 @@ import javax.persistence.TemporalType;
 public class Pessoa extends BaseEntity<Integer> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7737393571268898794L;
-	
+
 	@OneToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "USUARIO_ID")
 	private Usuario usuario;
 
 	@Column(length = 60, nullable = false, name = "NOME")
