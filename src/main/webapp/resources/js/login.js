@@ -14,7 +14,6 @@ $(function() {
 		$('#login-form').fadeOut(100);
 		$('#login-form-link').removeClass('active');
 		$(this).addClass('active');
-//		disableSaveButton(true);
 		e.preventDefault();
 	});
 
@@ -76,6 +75,8 @@ $(function() {
 				minlength: 5,
 				maxlength: 20,
 				remote: {
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
 					url: "/monetize/validarUsuario",
 					type: "post",
 					data: {
@@ -84,6 +85,7 @@ $(function() {
 						}
 					}
 				},
+				dataType: 'json'
 			},
 			email:{
 				required:true,
@@ -101,14 +103,14 @@ $(function() {
 				maxlength: 20,
 				equalTo: "#pass"
 			},
-		
-		messages: {
-			confirmacaoSenha:{
-				equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
+
+			messages: {
+				confirmacaoSenha:{
+					equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
+				}
 			}
 		}
-	}
-});
+	});
 
 //
 //	$('#user').keyup(function(event) {

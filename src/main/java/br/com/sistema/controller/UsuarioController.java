@@ -163,12 +163,12 @@ public class UsuarioController extends BaseController {
 
 
 	@ResponseBody
-	@RequestMapping(value = "/validarUsuario")
-	public ResponseEntity<?> validarUsuario(@RequestBody UsuarioVO usuario) {
+	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
+	public ResponseEntity<?> validarUsuario(@RequestBody String username) {
 		HttpHeaders headers = new HttpHeaders();
-		logger.warn("Validando o login do usuario " + usuario.getUsername());
+		logger.warn("Validando o login do usuario " + username);
 		try {
-			service.validarUsername(usuario.getUsername().trim());
+			service.validarUsername(username.trim());
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch (BusinessException e) {
 			logger.info(e.getMessage());

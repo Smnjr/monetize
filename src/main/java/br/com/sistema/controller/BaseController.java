@@ -7,13 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class BaseController {
 	
-//	@RequestMapping(value = "/accessDenied")
-//	public String accessDeniedPage(ModelMap model) {
-//		if(getPrincipal()!=null){
-//		model.addAttribute("user", getPrincipal());
-//		}
-//		return "accessDenied";
-//	}
 	
 	protected String getPrincipal(){
 		String userName = null;
