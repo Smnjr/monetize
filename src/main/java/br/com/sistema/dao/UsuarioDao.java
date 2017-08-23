@@ -9,6 +9,6 @@ public interface UsuarioDao extends GenericDao<Usuario, Integer> {
 
 	Usuario findByLogin(String username) ;
 
-	boolean isUsernameExisting(String username) throws ApplicationException;
+	Boolean isUsernameExistente(String username);
 
 }

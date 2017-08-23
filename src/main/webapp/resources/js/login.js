@@ -74,18 +74,16 @@ $(function() {
 				required:true,
 				minlength: 5,
 				maxlength: 20,
-				remote: {
-					dataType: "json",
-					contentType: "application/json; charset=utf-8",
-					url: "/monetize/validarUsuario",
-					type: "post",
-					data: {
-						username: function() {
-							return $( "#username" ).val();
-						}
+				remote: function() {
+					var r ={
+							url: "/monetize/validarUsuario",
+							type: "post",
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							data: $( "#user" ).val()
 					}
-				},
-				dataType: 'json'
+					return r;
+				}
 			},
 			email:{
 				required:true,
@@ -107,6 +105,9 @@ $(function() {
 			messages: {
 				confirmacaoSenha:{
 					equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
+				},
+				username: {
+					remote: "O nome de usuário já existe!"
 				}
 			}
 		}

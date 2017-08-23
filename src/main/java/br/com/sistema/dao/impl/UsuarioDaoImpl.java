@@ -34,13 +34,9 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 	}
 
 	@Override
-	public boolean isUsernameExisting(String username) throws ApplicationException {
-		try {
-			Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
-			q.setParameter(0, username);
-			return q.list().size() > 0;
-		} catch (Exception e) {
-			throw new ApplicationException(e);
-		}
+	public Boolean isUsernameExistente(String username) {
+		Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
+		q.setParameter(0, username);
+		return q.list().size() > 0;
 	}
 }

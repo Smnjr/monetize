@@ -164,18 +164,8 @@ public class UsuarioController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<?> validarUsuario(@RequestBody String username) {
-		HttpHeaders headers = new HttpHeaders();
+	public Boolean isUsuarioExistente(@RequestBody String username) {
 		logger.warn("Validando o login do usuario " + username);
-		try {
-			service.validarUsername(username.trim());
-			return new ResponseEntity<>(headers, HttpStatus.OK);
-		} catch (BusinessException e) {
-			logger.info(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		} catch (ApplicationException ex) {
-			logger.error(ex + ex.getCause().getMessage());
-			return new ResponseEntity<>("Erro ao validar o usuario " + ex.getMessage(), HttpStatus.BAD_GATEWAY);
-		}
+		return  !service.isUsernameExistente(username.trim());
 	}
 }

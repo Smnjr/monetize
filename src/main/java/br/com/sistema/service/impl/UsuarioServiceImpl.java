@@ -94,10 +94,8 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 
 	@Override
 	@Transactional(readOnly = true)
-	public void validarUsername(String userName) throws BusinessException, ApplicationException {
-		if (usuarioDao.isUsernameExisting(userName)) {
-			throw new BusinessException(messageSource.getMessage("usuario.exist", null, ptBR), TipoMensagem.AVISO);
-		}
+	public Boolean isUsernameExistente(String userName) {
+		return usuarioDao.isUsernameExistente(userName);
 	}
 
 	private void validarComposicaoEmail(String email) throws BusinessException {
