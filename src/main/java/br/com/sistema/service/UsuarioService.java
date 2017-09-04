@@ -8,7 +8,7 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 
 	void create(Usuario usuario) throws BusinessException, ApplicationException;
 
-	Boolean isUsernameExistente(String userName);
+	Boolean isUsernameValido(String userName) throws ApplicationException;
 
 	Usuario findByLogin(String username);
 

@@ -37,7 +37,7 @@ $(function() {
 			}
 		}
 	});
-	
+
 	$('#login-form').validate({
 		submitHandler: function() {
 			NProgress.start();
@@ -60,7 +60,7 @@ $(function() {
 		},
 	});
 
-	
+
 	$('#register-form').validate({
 		submitHandler: function() {
 			NProgress.start();
@@ -74,16 +74,10 @@ $(function() {
 				required:true,
 				minlength: 5,
 				maxlength: 20,
-				remote: function() {
-					var r ={
-							url: "/monetize/validarUsuario",
-							type: "post",
-							contentType: "application/json; charset=utf-8",
-							dataType: "json",
-							data: $( "#user" ).val()
-					}
-					return r;
-				}
+					url: "/monetize/isUsernameValido",
+				remote: {
+					type: "post",
+				},
 			},
 			email:{
 				required:true,
@@ -100,75 +94,16 @@ $(function() {
 				minlength: 5,
 				maxlength: 20,
 				equalTo: "#pass"
+			}
+		messages: {
+		},
+			confirmacaoSenha: {
+				equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
 			},
-
-			messages: {
-				confirmacaoSenha:{
-					equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
-				},
-				username: {
-					remote: "O nome de usuário já existe!"
-				}
+			username:{
+				remote: "Nome de usuário existente, informe outro nome!"
 			}
 		}
 	});
 
-//
-//	$('#user').keyup(function(event) {
-//		$('#userNameFormGroup-error').remove();
-//		$('#msgError').remove();
-//		disableSaveButton(false);
-//		event.preventDefault();
-//		if($('#user').val().length > 4){
-//			var usuario = {}
-//			usuario ["username"] = $('#user').val();
-//
-//			$.ajax({
-//				type: "POST",
-//				contentType: "application/json; charset=utf-8",
-//				url: '/monetize/validarUsuario',
-//				data: JSON.stringify(usuario),
-//				timeout : 1000,
-//				success : function(data) {
-//					console.log("SUCCESS: ", data);
-//				},
-//
-//				error : function(e) {
-//					console.log("ERROR: ", e);
-//					disableSaveButton(true);
-//					display(e);
-//				},
-//
-//				done : function(e) {
-//					console.log("DONE");
-//					disableSaveButton(false);
-//				}
-//			});
-//		}
-//	});
-//
-//
-//	function display(data) {
-//		if(data.status == 409){
-//			console.log(data.responseText);
-//			var resp =
-//				"<label id=\"userNameFormGroup-error\" class= \"help-block \" for=\"userNameFormGroup\">"
-//				+
-//				data.responseText
-//				+
-//				"</label>";
-//			$('#userNameFormGroup').append(resp);
-//			$('#userNameFormGroup').removeClass('form-group has-success');
-//			$('#userNameFormGroup').addClass('form-group has-error');
-//		}
-//		else{
-//			var resp = "<div id=\"msgError\" class=\"alert alert-danger\" \">"
-//				+data.responseText+"</div>";
-//			$('#cnt').prepend(resp);
-//		}
-//	}
-//
-//	function disableSaveButton(flag) {
-//		$("#register-submit").prop("disabled", flag);
-//	}
 });

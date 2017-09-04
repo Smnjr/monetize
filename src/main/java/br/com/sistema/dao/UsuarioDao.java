@@ -5,10 +5,8 @@ import br.com.sistema.model.Usuario;
 
 public interface UsuarioDao extends GenericDao<Usuario, Integer> {
 
-	Usuario findByNameAndEmail(String username, String email)  throws ApplicationException;
-
 	Usuario findByLogin(String username) ;
 
-	Boolean isUsernameExistente(String username);
+	Boolean isUsernameValido(String username) throws ApplicationException;
 
 }
