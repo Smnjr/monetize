@@ -35,7 +35,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
-import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
@@ -163,19 +162,15 @@ public class UsuarioController extends BaseController {
 
 
 	@ResponseBody
-	@RequestMapping(value = "/validarUsuario")
-	public ResponseEntity<?> validarUsuario(@RequestBody UsuarioVO usuario) {
-		HttpHeaders headers = new HttpHeaders();
-		logger.warn("Validando o login do usuario " + usuario.getUsername());
+	@RequestMapping(value = "/isUsernameValido")
+	public Boolean isUsernameValido(String username) {
+		logger.warn("Validando o login do usuario " + username);
+		Boolean isValido = false;
 		try {
-			service.validarUsername(usuario.getUsername().trim());
-			return new ResponseEntity<>(headers, HttpStatus.OK);
-		} catch (BusinessException e) {
-			logger.info(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		} catch (ApplicationException ex) {
-			logger.error(ex + ex.getCause().getMessage());
-			return new ResponseEntity<>("Erro ao validar o usuario " + ex.getMessage(), HttpStatus.BAD_GATEWAY);
+			isValido = service.isUsernameValido(username.trim());
+		} catch (ApplicationException e) {
+			logger.error(e + e.getCause().getMessage());
 		}
+		return isValido;
 	}
 }
