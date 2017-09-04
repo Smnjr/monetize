@@ -13,18 +13,6 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 
 	static final Logger logger = Logger.getLogger(GenericDaoImpl.class);
 
-	@Override
-	public Usuario findByNameAndEmail(String username, String email) throws ApplicationException {
-		try {
-			Query q = currentSession().createQuery("FROM Usuario u where u.username = ? and u.email=?");
-			q.setParameter(0, username);
-			q.setParameter(1, email);
-			return (Usuario) q.uniqueResult();
-		} catch (Exception e) {
-			logger.error("Erro ao obter registro " + e.getMessage());
-			throw new ApplicationException(messages.getString("query.error "), e);
-		}
-	}
 
 	@Override
 	public Usuario findByLogin(String username) {
@@ -34,9 +22,12 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 	}
 
 	@Override
-	public Boolean isUsernameExistente(String username) {
-		Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
-		q.setParameter(0, username);
-		return q.list().size() > 0;
+	public Boolean isUsernameValido(String username) throws ApplicationException {
+		try {
+			Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
+			q.setParameter(0, username);
+		} catch (Exception e) {
+			return q.list().size() == 0;
+			throw new ApplicationException(e);
 	}
 }

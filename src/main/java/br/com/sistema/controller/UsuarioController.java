@@ -35,7 +35,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
-import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
@@ -163,9 +162,15 @@ public class UsuarioController extends BaseController {
 
 
 	@ResponseBody
-	@RequestMapping(value = "/validarUsuario", method = RequestMethod.POST)
-	public Boolean isUsuarioExistente(@RequestBody String username) {
+	@RequestMapping(value = "/isUsernameValido")
+	public Boolean isUsernameValido(String username) {
 		logger.warn("Validando o login do usuario " + username);
-		return  !service.isUsernameExistente(username.trim());
+		try {
+		Boolean isValido = false;
+			isValido = service.isUsernameValido(username.trim());
+			logger.error(e + e.getCause().getMessage());
+		}
+		} catch (ApplicationException e) {
+		return isValido;
 	}
 }
