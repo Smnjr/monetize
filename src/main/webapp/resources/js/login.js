@@ -17,15 +17,16 @@ $(function() {
 		e.preventDefault();
 	});
 
-
 	$.validator.setDefaults({
 		errorElement : "label",
 		errorClass : "help-block",
 		highlight : function(element) {
-			$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			$(element).closest('.form-group').removeClass('has-success')
+			.addClass('has-error');
 		},
 		unhighlight : function(element) {
-			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			$(element).closest('.form-group').removeClass('has-error')
+			.addClass('has-success');
 		},
 		errorPlacement : function(error, element) {
 			if (element.parent('.input-group').length
@@ -39,7 +40,7 @@ $(function() {
 	});
 
 	$('#login-form').validate({
-		submitHandler: function() {
+		submitHandler : function() {
 			NProgress.start();
 			$('#login-form').attr('action', '/monetize/j_security_check');
 			$('#login-form').submit();
@@ -60,50 +61,52 @@ $(function() {
 		},
 	});
 
-
-	$('#register-form').validate({
-		submitHandler: function() {
-			NProgress.start();
-			$('#register-form').attr('action', '/monetize/salvarUsuario');
-			$('#register-form').submit();
-			NProgress.done();
-		},
-
-		rules : {
-			username:{
-				required:true,
-				minlength: 5,
-				maxlength: 20,
-					url: "/monetize/isUsernameValido",
-				remote: {
-					type: "post",
+	$('#register-form')
+	.validate(
+			{
+				submitHandler : function() {
+					NProgress.start();
+					$('#register-form').attr('action',
+					'/monetize/salvarUsuario');
+					$('#register-form').submit();
+					NProgress.done();
 				},
-			},
-			email:{
-				required:true,
-				minlength: 10,
-				maxlength: 30
-			},
-			pass:{
-				required:true,
-				minlength: 5,
-				maxlength: 20
-			},
-			confirmacaoSenha:{
-				required:true,
-				minlength: 5,
-				maxlength: 20,
-				equalTo: "#pass"
-			}
-		messages: {
-		},
-			confirmacaoSenha: {
-				equalTo: "O valor da confirmação de senha deve ser igual ao valor da senha!"
-			},
-			username:{
-				remote: "Nome de usuário existente, informe outro nome!"
-			}
-		}
-	});
+
+				rules : {
+					username : {
+						required : true,
+						minlength : 5,
+						maxlength : 20,
+						remote : {
+							url : "/monetize/isUsernameValido",
+							type : "post",
+						},
+					},
+					email : {
+						required : true,
+						minlength : 10,
+						maxlength : 30
+					},
+					pass : {
+						required : true,
+						minlength : 5,
+						maxlength : 20
+					},
+					confirmacaoSenha : {
+						required : true,
+						minlength : 5,
+						maxlength : 20,
+						equalTo : "#pass"
+					}
+				},
+				messages : {
+					confirmacaoSenha : {
+						equalTo : "O valor da confirmação de senha deve ser igual ao valor da senha!"
+					},
+					username : {
+						remote : "Nome de usuário existente, informe outro nome!"
+					}
+				}
+			});
 
 });

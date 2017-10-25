@@ -1,9 +1,8 @@
 package br.com.sistema.exception;
 
 /**
- * Classe responsável pelo tratamento das exceções originadas pelos erros de
- * sistema, como por exemplo: 1) banco fora do ar; 2) NullPointerException; 3)
- * Comparações de valores inválidos.
+ * Classe responsavel pelo tratamento das exceções originadas pelos erros de
+ * sistema.
  * 
  * @author francisco.menezes
  * 

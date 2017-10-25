@@ -5,9 +5,9 @@ import br.com.sistema.util.TipoMensagem;
 public class BusinessException extends Exception {
 	private TipoMensagem tipoMensagem;
 	private String errorCode;
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public BusinessException(Throwable cause) {
 		super(cause);
 	}
@@ -17,13 +17,15 @@ public class BusinessException extends Exception {
 		this.tipoMensagem = tipoMensagem;
 		this.errorCode = errorCode;
 	}
+
 	public BusinessException(String msg, TipoMensagem tipoMensagem) {
 		super(msg);
 		this.tipoMensagem = tipoMensagem;
 	}
 
 	/**
-	 * Obtém o valor do atributo tipoMensagem
+	 * Obtem o valor do atributo tipoMensagem
+	 * 
 	 * @return the tipoMensagem
 	 */
 	public TipoMensagem getTipoMensagem() {
@@ -32,6 +34,7 @@ public class BusinessException extends Exception {
 
 	/**
 	 * atribui o valor do atributo tipoMensagem
+	 * 
 	 * @param tipoMensagem
 	 */
 	public void setTipoMensagem(TipoMensagem tipoMensagem) {
@@ -40,6 +43,7 @@ public class BusinessException extends Exception {
 
 	/**
 	 * Obtém o valor do atributo errorCode
+	 * 
 	 * @return the errorCode
 	 */
 	public String getErrorCode() {
@@ -48,6 +52,7 @@ public class BusinessException extends Exception {
 
 	/**
 	 * atribui o valor do atributo errorCode
+	 * 
 	 * @param errorCode
 	 */
 	public void setErrorCode(String errorCode) {

@@ -13,7 +13,6 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 
 	static final Logger logger = Logger.getLogger(GenericDaoImpl.class);
 
-
 	@Override
 	public Usuario findByLogin(String username) {
 		Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
@@ -26,8 +25,9 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 		try {
 			Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
 			q.setParameter(0, username);
-		} catch (Exception e) {
 			return q.list().size() == 0;
+		} catch (Exception e) {
 			throw new ApplicationException(e);
+		}
 	}
 }

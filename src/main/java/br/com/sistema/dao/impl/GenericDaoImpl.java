@@ -80,7 +80,6 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 		}
 	}
 
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public E find(K key) throws ApplicationException {
@@ -91,6 +90,7 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 			throw new ApplicationException(messages.getString("query.error"), e);
 		}
 	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<E> findAll() throws ApplicationException {

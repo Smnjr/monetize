@@ -128,18 +128,6 @@ public class UsuarioController extends BaseController {
 	}
 
 
-	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
-	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
-		HttpHeaders headers = new HttpHeaders();
-		try {
-			service.update(usuario);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("mensagem", new Mensagem("Sucesso ao alterar o usuário.", TipoMensagem.SUCESSO));
-		} catch (ApplicationException ex) {
-			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
-		}
-		return new ResponseEntity<>(headers, HttpStatus.OK);
-	}
 
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -165,12 +153,25 @@ public class UsuarioController extends BaseController {
 	@RequestMapping(value = "/isUsernameValido")
 	public Boolean isUsernameValido(String username) {
 		logger.warn("Validando o login do usuario " + username);
-		try {
 		Boolean isValido = false;
+		try {
 			isValido = service.isUsernameValido(username.trim());
+		} catch (ApplicationException e) {
 			logger.error(e + e.getCause().getMessage());
 		}
-		} catch (ApplicationException e) {
 		return isValido;
+	}
+	
+	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
+	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
+		HttpHeaders headers = new HttpHeaders();
+		try {
+			service.update(usuario);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("mensagem", new Mensagem("Sucesso ao alterar o usuário.", TipoMensagem.SUCESSO));
+		} catch (ApplicationException ex) {
+			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
+		}
+		return new ResponseEntity<>(headers, HttpStatus.OK);
 	}
 }
