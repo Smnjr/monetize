@@ -70,8 +70,7 @@ public class UsuarioController extends BaseController {
 		ModelAndView model = new ModelAndView();
 		model.addObject("usuario", new Usuario());
 		if (error != null) {
-			model.addObject("mensagem",
-					new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
+			model.addObject("mensagem", new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
 		}
 		model.setViewName("/credenciais.jsp");
 		return model;
@@ -79,6 +78,7 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
+		model.addAttribute("usuario", getPrincipal());
 		return new ModelAndView("home");
 	}
 
@@ -116,6 +116,7 @@ public class UsuarioController extends BaseController {
 			token.setDetails(new WebAuthenticationDetails(request));
 			Authentication authenticatedUser = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+			request.setAttribute("usuario", getPrincipal());
 		} catch (Exception e) {
 			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}

@@ -28,7 +28,7 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 
 	protected Class<? extends E> daoType;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public GenericDaoImpl() {
 		java.lang.reflect.Type t = getClass().getGenericSuperclass();
 		ParameterizedType pt = (ParameterizedType) t;

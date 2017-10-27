@@ -13,12 +13,14 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jinplace-1.2.1.js">  </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
 <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
+
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
