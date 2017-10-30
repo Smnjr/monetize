@@ -72,13 +72,19 @@
 										</div>
 									</form>
 									
-									<form id="register-form" name="registerForm" role="form"
-										style="display: none;" method="post">
-										<div class="form-group" id="userNameFormGroup" >
+									<form id="register-form" name="registerForm" role="form"	style="display: none;" method="post">
+										<div class="form-group" id="userFormGroup" >
 											<input type="text" name="username" tabindex="1" id="user" autocomplete="off"
-												placeholder="Nome do usuário" class="form-control" 
+												placeholder="Login do usuário" class="form-control" 
 												minlength="5" maxlength="20" required />
+												
 										</div>
+										
+										<div class="form-group" id="userNameFormGroup">
+										<input type="text" name="nome" tabindex="1" id="name" autocomplete="off"
+                                    placeholder="Nome do usuário" class="form-control" 
+                                    minlength="5" maxlength="20" required />
+                              </div>
 
 										<div class="form-group">
 											<input type="email" name="email" id="email"

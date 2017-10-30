@@ -34,6 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
+import br.com.sistema.model.Pessoa;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
@@ -55,7 +56,9 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
-		model.addAttribute("usuario", getPrincipal());
+
+		Usuario usuario = new Usuario();
+		usuario.setPessoa(new Pessoa());
 		try {
 			service.verificarPerfisExistentes();
 		} catch (ApplicationException e) {
@@ -79,6 +82,7 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
+		model.addAttribute("usuario", getPrincipal());
 		return new ModelAndView("home");
 	}
 
@@ -161,7 +165,7 @@ public class UsuarioController extends BaseController {
 		}
 		return isValido;
 	}
-	
+
 	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
 	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
 		HttpHeaders headers = new HttpHeaders();

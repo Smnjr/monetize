@@ -17,7 +17,7 @@
 			<li>
 				<a href="#">
 					<i class="fa fa-user fa-fw"></i>
-					Perfil do usuário
+					${usuario}
 				</a>
 			</li>
 			<li class="divider"></li>
