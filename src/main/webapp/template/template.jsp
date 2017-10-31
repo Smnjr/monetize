@@ -39,10 +39,10 @@
 
 			<!-- Header -->
 			<tiles:insertAttribute name="header" />
-
 			<!-- Menu Page -->
 			<tiles:insertAttribute name="sideBar" />
-		</nav>
+</nav>
+		
 
 		<!-- Body Page -->
 		<tiles:insertAttribute name="body" />
