@@ -57,7 +57,7 @@
 
 										<div class="form-group text-center">
 											<input type="checkbox" tabindex="3" class=""
-												"name="_spring_security_remember_me" id="remember">
+												name="remember-me" id="remember">
 											<label for="remember"> Remember Me</label>
 										</div>
 

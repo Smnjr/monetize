@@ -1,6 +1,6 @@
 
-<div class="navbar-default sidebar" role="navigation">
-	<div class="sidebar-nav navbar-collapse">
+<div class="navbar-default navbar-static-side" role="navigation">
+	<div class="sidebar-collapse">
 		<ul class="nav" id="side-menu">
 			<li class="sidebar-search">
 				<div class="input-group custom-search-form">
@@ -47,10 +47,10 @@
 							<li><a href="#">Third Level Item</a></li>
 						</ul> <!-- /.nav-third-level --></li>
 				</ul> <!-- /.nav-second-level --></li>
-			<li class="active"><a href="#"><i
-					class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+			<li><a href="#"><i class="fa fa-files-o fa-fw"></i> Sample
+					Pages<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-					<li><a class="active" href="blank.html">Blank Page</a></li>
+					<li><a href="blank.html">Blank Page</a></li>
 					<li><a href="login.html">Login Page</a></li>
 				</ul> <!-- /.nav-second-level --></li>
 		</ul>
