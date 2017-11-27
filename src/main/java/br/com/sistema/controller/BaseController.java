@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
 
 public class BaseController {
@@ -27,6 +28,18 @@ public class BaseController {
 			nome = usuarioService.findByLogin(userName).getNome();
 		}
 		return nome;
+	}
+
+	protected Usuario getUsuarioLogado() {
+		Object usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Usuario usuario;
+		if (usuarioLogado instanceof UserDetails) {
+			String username = ((UserDetails) usuarioLogado).getUsername();
+			usuario = usuarioService.findByLogin(username);
+		} else {
+			usuario = (Usuario) usuarioLogado;
+		}
+		return usuario;
 	}
 
 }

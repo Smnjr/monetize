@@ -4218,15 +4218,15 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 }
 
 .input-group-addon {
-	padding: 6px 12px;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 1;
-	color: #555;
-	text-align: center;
-	background-color: #eee;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .input-group-addon.input-sm {

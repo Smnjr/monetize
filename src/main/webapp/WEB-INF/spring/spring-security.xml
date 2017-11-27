@@ -26,14 +26,11 @@
 			username-parameter="username"
 			authentication-failure-url="/login?error" 
 			login-processing-url="/j_security_check"
-			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
+			/>
 			    <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
 			<csrf disabled="true" />
-			
-			<remember-me
-        token-validity-seconds="1209600"
-remember-me-parameter="remember-me"
-/>
+			<remember-me key="uniqueAndSecret"
+	token-validity-seconds="86400" />
 			
 			
 	</http>

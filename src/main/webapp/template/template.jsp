@@ -13,7 +13,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 <link href="${pageContext.request.contextPath}/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/morris-0.4.3.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/timeline.css" rel="stylesheet">

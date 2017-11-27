@@ -1,5 +1,4 @@
 package br.com.sistema.controller;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
-import br.com.sistema.model.Pessoa;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
@@ -56,9 +54,6 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
-
-		Usuario usuario = new Usuario();
-		usuario.setPessoa(new Pessoa());
 		try {
 			service.verificarPerfisExistentes();
 		} catch (ApplicationException e) {
@@ -82,8 +77,14 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
-		model.addAttribute("usuario", getPrincipal());
+		model.addAttribute("usuario", getUsuarioLogado());
 		return new ModelAndView("home");
+	}
+
+	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
+	public ModelAndView user(Model model) {
+		model.addAttribute("usuario", getUsuarioLogado());
+		return new ModelAndView("user");
 	}
 
 

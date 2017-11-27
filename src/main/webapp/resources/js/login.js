@@ -40,7 +40,7 @@ $(function() {
 	});
 
 	$('#login-form').validate({
-		submitHandler : function() {
+		submitHandler : function(form) {
 			NProgress.start();
 			$('#login-form').attr('action', '/monetize/j_security_check');
 			$('#login-form').submit();

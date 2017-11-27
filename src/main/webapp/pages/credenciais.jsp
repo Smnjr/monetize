@@ -5,22 +5,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Monetize</title> 
-	<script  type="text/javascript" src="resources/jquery/jquery-3.2.1.js"> </script>
-	<script type="text/javascript" src="resources//bootstrap/js/bootstrap.js"> </script>
-	<script type="text/javascript" src="resources//jquery-validation/jquery.validate.js"> </script>
-	<script type="text/javascript" src="resources/jquery-validation/localization/messages_pt_BR.js"> </script>
-	<script type="text/javascript" src="resources/js/login.js">   </script>
-	<script type="text/javascript" src="resources/nprogress-master/nprogress.js"> </script>
-	<link   rel="stylesheet" id="bootstrap-css" href="resources/bootstrap/css/bootstrap.css">
-	<link 	rel="stylesheet" href="resources/css/credenciais.css">
-	<link 	rel="stylesheet" href="resources/nprogress-master/nprogress.css">
+<title>Monetize</title>
+<script type="text/javascript" src="resources/jquery/jquery-3.2.1.js"> </script>
+<script type="text/javascript"
+	src="resources//bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript"
+	src="resources//jquery-validation/jquery.validate.js"> </script>
+<script type="text/javascript"
+	src="resources/jquery-validation/localization/messages_pt_BR.js"> </script>
+<script type="text/javascript" src="resources/js/login.js">   </script>
+<script type="text/javascript"
+	src="resources/nprogress-master/nprogress.js"> </script>
+<link rel="stylesheet" id="bootstrap-css"
+	href="resources/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="resources/css/credenciais.css">
+<link rel="stylesheet" href="resources/nprogress-master/nprogress.css">
+
 </head>
 
 <body>
-	<input type="hidden" id="mensagem" value="${mensagem.texto}" />
-
 	<div id="cnt" class="container">
+	<c:if test="${not empty mensagem}">
+      <div class="${mensagem.tipoMensagem.classeCss}">${mensagem.texto}</div>
+   </c:if>
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
 					<div class="panel panel-login">
@@ -30,7 +37,7 @@
 									<a href="#" class="active" id="login-form-link">Login</a>
 								</div>
 								<div class="col-xs-6">
-									<a href="#" id="register-form-link">Register</a>
+									<a href="#" id="register-form-link">Regisro</a>
 								</div>
 							</div>
 							<hr>
@@ -58,7 +65,7 @@
 										<div class="form-group text-center">
 											<input type="checkbox" tabindex="3" class=""
 												name="remember-me" id="remember">
-											<label for="remember"> Remember Me</label>
+											<label for="remember"> Lembrar-me</label>
 										</div>
 
 										<div class="form-group">
@@ -124,5 +131,5 @@
 			</div>
 		</div>
 </body>
-	
+
 </html>
