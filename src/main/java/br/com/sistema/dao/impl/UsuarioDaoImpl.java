@@ -21,11 +21,18 @@ public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements 
 	}
 
 	@Override
-	public Boolean isUsernameValido(String username) throws ApplicationException {
+	public Boolean isUsernameValido(String username, String usernameUsuarioLogado) throws ApplicationException {
 		try {
+			Boolean isValido;
 			Query q = currentSession().createQuery("FROM Usuario u where u.username =?");
 			q.setParameter(0, username);
-			return q.list().size() == 0;
+			Usuario usuario = (Usuario) q.uniqueResult();
+			if (usernameUsuarioLogado == null) {
+				isValido = usuario == null;
+			} else {
+				isValido = usuario == null || (usuario != null && usuario.getUsername().equals(usernameUsuarioLogado));
+			}
+			return isValido;
 		} catch (Exception e) {
 			throw new ApplicationException(e);
 		}

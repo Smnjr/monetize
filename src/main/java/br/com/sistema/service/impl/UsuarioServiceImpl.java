@@ -93,8 +93,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 
 	@Override
 	@Transactional(readOnly = true)
-	public Boolean isUsernameValido(String userName) throws ApplicationException {
-		return usuarioDao.isUsernameValido(userName);
+	public Boolean isUsernameValido(String userName, String usernameUsuarioLogado) throws ApplicationException {
+		return usuarioDao.isUsernameValido(userName, usernameUsuarioLogado);
+
 	}
 
 	private void validarComposicaoEmail(String email) throws BusinessException {

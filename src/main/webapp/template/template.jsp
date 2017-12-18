@@ -13,11 +13,10 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 <link href="${pageContext.request.contextPath}/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/morris-0.4.3.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/timeline.css" rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
 <link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.css" rel="stylesheet">
@@ -45,7 +44,6 @@
 			<!-- Menu Page -->
 			<tiles:insertAttribute name="sideBar" />
 		</nav>
-
 
 		<!-- Body Page -->
 		<tiles:insertAttribute name="body" />

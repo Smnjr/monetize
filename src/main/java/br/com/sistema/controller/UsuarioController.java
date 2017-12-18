@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,14 +21,12 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
@@ -83,7 +80,10 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
 	public ModelAndView user(Model model) {
-		model.addAttribute("usuario", getUsuarioLogado());
+
+		Usuario user = getUsuarioLogado();
+		user.setPassword(null);
+		model.addAttribute("usuario", user);
 		return new ModelAndView("user");
 	}
 
@@ -133,8 +133,6 @@ public class UsuarioController extends BaseController {
 	}
 
 
-
-
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -159,24 +157,28 @@ public class UsuarioController extends BaseController {
 	public Boolean isUsernameValido(String username) {
 		logger.warn("Validando o login do usuario " + username);
 		Boolean isValido = false;
+		String nomeUsuarioLogado = null;
 		try {
-			isValido = service.isUsernameValido(username.trim());
+			Usuario usuarioLogado = getUsuarioLogado();
+			if (usuarioLogado != null) {
+				nomeUsuarioLogado = usuarioLogado.getUsername();
+
+			}
+			isValido = service.isUsernameValido(username.trim(), nomeUsuarioLogado);
 		} catch (ApplicationException e) {
 			logger.error(e + e.getCause().getMessage());
 		}
 		return isValido;
 	}
 
-	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
-	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
-		HttpHeaders headers = new HttpHeaders();
+	@ResponseBody
+	@RequestMapping(value = "/editar", method = RequestMethod.POST)
+	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) {
 		try {
 			service.update(usuario);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("mensagem", new Mensagem("Sucesso ao alterar o usuário.", TipoMensagem.SUCESSO));
 		} catch (ApplicationException ex) {
-			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
+			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(headers, HttpStatus.OK);
+		return new ResponseEntity<>("Sucesso", HttpStatus.OK);
 	}
 }
