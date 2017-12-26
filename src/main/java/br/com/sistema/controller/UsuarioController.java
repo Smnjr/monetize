@@ -159,9 +159,8 @@ public class UsuarioController extends BaseController {
 		Boolean isValido = false;
 		String nomeUsuarioLogado = null;
 		try {
-			Usuario usuarioLogado = getUsuarioLogado();
-			if (usuarioLogado != null) {
-				nomeUsuarioLogado = usuarioLogado.getUsername();
+			if (isAuthenticated()) {
+				nomeUsuarioLogado = getUsuarioLogado().getUsername();
 
 			}
 			isValido = service.isUsernameValido(username.trim(), nomeUsuarioLogado);
