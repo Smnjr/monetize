@@ -4,16 +4,16 @@ $(function() {
 		errorClass : "help-block",
 		highlight : function(element) {
 			$(element).closest('.form-group').removeClass('has-success')
-				.addClass('has-error');
+			.addClass('has-error');
 		},
 		unhighlight : function(element) {
 			$(element).closest('.form-group').removeClass('has-error')
-				.addClass('has-success');
+			.addClass('has-success');
 		},
 		errorPlacement : function(error, element) {
 			if (element.parent('.input-group').length
-				|| element.prop('type') === 'checkbox'
-				|| element.prop('type') === 'radio') {
+					|| element.prop('type') === 'checkbox'
+						|| element.prop('type') === 'radio') {
 				error.insertAfter(element.parent());
 			} else {
 				error.insertAfter(element);
@@ -22,7 +22,7 @@ $(function() {
 	});
 
 	$('#user_edit_form')
-		.validate(
+	.validate(
 			{
 				submitHandler : function() {
 					NProgress.start();
@@ -33,16 +33,24 @@ $(function() {
 					data["email"] = $("#email").val();
 					data["pass"] = $("#pass").val();
 					data["confirmPassword"] = $("#confirmPassword").val();
+
 					$.ajax({
-						type : "POST",
+						type : "PUT",
 						URL : "/monetize/editar",
 						contentType : 'application/json',
 						data : JSON.stringify(data),
-						success : function(data, textStatus, jqXHR) {
-							alert(textStatus);
+						dataType : 'json',
+						timeout: 10000,
+						success : function(data) {
+							console.log("SUCCESS: ", data);
+							display(data);
 						},
-						error : function(jqXHR, textStatus, errorThrown) {
-							alert(errorThrown);
+						error : function(e) {
+							console.log("ERROR: ", e);
+							display(e);
+						},
+						done : function(e) {
+							console.log("DONE");
 						}
 					});
 					NProgress.done();
@@ -90,5 +98,9 @@ $(function() {
 					}
 				}
 			});
-
+	function display(data) {
+		var json = "<h4>Ajax Response</h4><pre>"
+			+ JSON.stringify(data, null, 4) + "</pre>";
+		$('#feedback').html(json);
+	}
 });

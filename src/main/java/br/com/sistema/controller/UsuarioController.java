@@ -21,6 +21,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -74,16 +75,19 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
-		model.addAttribute("usuario", getUsuarioLogado());
+		if (isAuthenticated()) {
+			model.addAttribute("usuario", getUsuarioLogado());
+		}
 		return new ModelAndView("home");
 	}
 
 	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
 	public ModelAndView user(Model model) {
-
-		Usuario user = getUsuarioLogado();
-		user.setPassword(null);
-		model.addAttribute("usuario", user);
+		if (isAuthenticated()) {
+			Usuario user = getUsuarioLogado();
+			user.setPassword(null);
+			model.addAttribute("usuario", user);
+		}
 		return new ModelAndView("user");
 	}
 
