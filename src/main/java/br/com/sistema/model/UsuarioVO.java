@@ -4,20 +4,31 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class UsuarioVO {
 
-	@JsonView
-	private Integer id;
+	@JsonView(Views.Public.class)
+	private Long id;
 
-	@JsonView
+	@JsonView(Views.Public.class)
 	private String username;
 
-	@JsonView
+	@JsonView(Views.Public.class)
+	private String name;
+
+	@JsonView(Views.Public.class)
+	private String email;
+
+	@JsonView(Views.Public.class)
 	private String password;
 
-	@JsonView
+	@JsonView(Views.Public.class)
 	private String confirmacaoSenha;
+	
+	public Long getId() {
+		return id;
+	}
 
-	@JsonView
-	private String email;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getUsername() {
 		return username;
@@ -25,6 +36,22 @@ public class UsuarioVO {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -41,22 +68,6 @@ public class UsuarioVO {
 
 	public void setConfirmacaoSenha(String confirmacaoSenha) {
 		this.confirmacaoSenha = confirmacaoSenha;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 }

@@ -13,14 +13,15 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jinplace-1.2.1.js">  </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
-<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
+<link href="${pageContext.request.contextPath}/resources/css/morris-0.4.3.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/timeline.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
+<link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.css" rel="stylesheet">
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,15 +34,17 @@
 </head>
 
 <body>
+
+<input type="hidden" id="csrfToken" value="${_csrf.token}"/>
+<input type="hidden" id="csrfHeader" value="${_csrf.headerName}"/>
+
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
-			style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
 			<!-- /.navbar-header -->
 
 			<!-- Header -->
 			<tiles:insertAttribute name="header" />
-
 			<!-- Menu Page -->
 			<tiles:insertAttribute name="sideBar" />
 		</nav>

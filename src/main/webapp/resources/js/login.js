@@ -40,7 +40,7 @@ $(function() {
 	});
 
 	$('#login-form').validate({
-		submitHandler : function() {
+		submitHandler : function(form) {
 			NProgress.start();
 			$('#login-form').attr('action', '/monetize/j_security_check');
 			$('#login-form').submit();
@@ -81,6 +81,11 @@ $(function() {
 							url : "/monetize/isUsernameValido",
 							type : "post",
 						},
+					},
+					name : {
+						required : true,
+						minlength : 5,
+						maxlength : 30
 					},
 					email : {
 						required : true,

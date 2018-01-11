@@ -1,5 +1,4 @@
 package br.com.sistema.controller;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,23 +22,23 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
 
 @Controller
+@RequestMapping("/")
 public class UsuarioController extends BaseController {
 
 	@Autowired
@@ -55,7 +54,6 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
-		model.addAttribute("usuario", getPrincipal());
 		try {
 			service.verificarPerfisExistentes();
 		} catch (ApplicationException e) {
@@ -70,7 +68,8 @@ public class UsuarioController extends BaseController {
 		ModelAndView model = new ModelAndView();
 		model.addObject("usuario", new Usuario());
 		if (error != null) {
-			model.addObject("mensagem", new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
+			model.addObject("mensagem",
+					new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
 		}
 		model.setViewName("/credenciais.jsp");
 		return model;
@@ -78,7 +77,9 @@ public class UsuarioController extends BaseController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
-		model.addAttribute("usuario", getPrincipal());
+		if (isAuthenticated()) {
+		model.addAttribute("usuario", getUsuarioLogado());
+		}
 		return new ModelAndView("home");
 	}
 
@@ -92,7 +93,7 @@ public class UsuarioController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value= "/salvarUsuario", method = RequestMethod.POST)
+	@RequestMapping(value = "/salvarUsuario", method = RequestMethod.POST)
 	public ModelAndView executarRegistro(Usuario usuario, HttpServletRequest request, Model model) {
 		try {
 			logger.debug("Salvando o usuario " + usuario.getUsername());
@@ -116,7 +117,6 @@ public class UsuarioController extends BaseController {
 			token.setDetails(new WebAuthenticationDetails(request));
 			Authentication authenticatedUser = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
-			request.setAttribute("usuario", getPrincipal());
 		} catch (Exception e) {
 			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
@@ -127,8 +127,6 @@ public class UsuarioController extends BaseController {
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
 		return authorities;
 	}
-
-
 
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -155,24 +153,27 @@ public class UsuarioController extends BaseController {
 	public Boolean isUsernameValido(String username) {
 		logger.warn("Validando o login do usuario " + username);
 		Boolean isValido = false;
+		String nomeUsuarioLogado = null;
 		try {
-			isValido = service.isUsernameValido(username.trim());
+			if (isAuthenticated()) {
+				nomeUsuarioLogado = getUsuarioLogado().getUsername();
+			}
+			isValido = service.isUsernameValido(username.trim(), nomeUsuarioLogado);
 		} catch (ApplicationException e) {
 			logger.error(e + e.getCause().getMessage());
 		}
 		return isValido;
 	}
 	
-	@RequestMapping(value = "/usuario/{id}",  method = RequestMethod.PUT)
-	public  ResponseEntity<Void> atualizar(@PathVariable("id")  @RequestBody Usuario usuario, Model model,   UriComponentsBuilder ucBuilder){
-		HttpHeaders headers = new HttpHeaders();
-		try {
-			service.update(usuario);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("mensagem", new Mensagem("Sucesso ao alterar o usuário.", TipoMensagem.SUCESSO));
-		} catch (ApplicationException ex) {
-			model.addAttribute("mensagem", new Mensagem(ex.getMessage() + ex.getCause().getMessage(), TipoMensagem.ERRO));
+	@RequestMapping(value = { "/user" }, method = RequestMethod.GET)
+	public ModelAndView user(Model model) {
+		if (isAuthenticated()) {
+			Usuario user = getUsuarioLogado();
+			user.setPassword(null);
+			model.addAttribute("usuario", user);
 		}
-		return new ResponseEntity<>(headers, HttpStatus.OK);
+		return new ModelAndView("user");
 	}
+
+	
 }

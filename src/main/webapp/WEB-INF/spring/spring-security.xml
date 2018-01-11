@@ -18,6 +18,10 @@
 		<intercept-url pattern="/pages/protected/*" 	  access="isAuthenticated()" 					 />
 		<intercept-url pattern="/login"   				  access="permitAll"  							 />
 		<intercept-url pattern="/home"					  access="isAuthenticated()" 					 />
+		<intercept-url pattern="/user"					  access="isAuthenticated()" 					 />
+		<intercept-url pattern="/home/editar"					  access="isAuthenticated()" 					 />
+	
+<intercept-url pattern="/user"                 access="isAuthenticated()"               />
 	
 	<form-login 
 			login-page="/login"
@@ -27,7 +31,12 @@
 			authentication-failure-url="/login?error" 
 			login-processing-url="/j_security_check"
 			/>
+			    <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
 			<csrf disabled="true" />
+			<remember-me key="uniqueAndSecret"
+	token-validity-seconds="86400" />
+			
+			
 	</http>
 
 	<!-- Authentication manager -->

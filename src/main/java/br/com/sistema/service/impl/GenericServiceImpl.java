@@ -24,37 +24,37 @@ public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void saveOrUpdate(E entitty) throws ApplicationException {
 		genericDao.saveOrUpdate(entitty);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	@Transactional(readOnly = true)
 	public List<E> findAll() throws ApplicationException {
 		return genericDao.findAll();
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	@Transactional(readOnly = true)
 	public E find(K id) throws ApplicationException {
 		return genericDao.find(id);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void save(E entity) throws ApplicationException {
 		genericDao.save(entity);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void update(E entity) throws ApplicationException {
 		genericDao.update(entity);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void delete(E entity) throws ApplicationException {
 		genericDao.delete(entity);
 	}

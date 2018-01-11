@@ -51,6 +51,9 @@ public class Usuario extends BaseEntity<Integer> {
 					@JoinColumn(name = "perfil_id", referencedColumnName = "id") })
 	private Perfil perfilUsuario;
 
+	@Column(length = 60, nullable = false, name = "nome")
+	private String nome;
+
 	public String getUsername() {
 		return username;
 	}
@@ -119,5 +122,12 @@ public class Usuario extends BaseEntity<Integer> {
 		this.perfilUsuario = perfilUsuario;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 }
