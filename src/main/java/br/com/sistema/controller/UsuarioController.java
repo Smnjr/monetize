@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Utilities;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class UsuarioController extends BaseController {
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(Model model) {
 		if (isAuthenticated()) {
-		model.addAttribute("usuario", getUsuarioLogado());
+			model.addAttribute("usuario", getUsuarioLogado());
 		}
 		return new ModelAndView("home");
 	}
@@ -99,7 +100,6 @@ public class UsuarioController extends BaseController {
 			logger.debug("Salvando o usuario " + usuario.getUsername());
 			service.create(usuario);
 			efetuarLogin(usuario, request);
-
 		} catch (BusinessException e) {
 			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (ApplicationException ex) {
@@ -122,13 +122,6 @@ public class UsuarioController extends BaseController {
 		}
 	}
 
-	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
-		return authorities;
-	}
-
-
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -147,7 +140,6 @@ public class UsuarioController extends BaseController {
 		return error;
 	}
 
-
 	@ResponseBody
 	@RequestMapping(value = "/isUsernameValido")
 	public Boolean isUsernameValido(String username) {
@@ -165,15 +157,6 @@ public class UsuarioController extends BaseController {
 		return isValido;
 	}
 	
-	@RequestMapping(value = { "/user" }, method = RequestMethod.GET)
-	public ModelAndView user(Model model) {
-		if (isAuthenticated()) {
-			Usuario user = getUsuarioLogado();
-			user.setPassword(null);
-			model.addAttribute("usuario", user);
-		}
-		return new ModelAndView("user");
-	}
 
 	
 }

@@ -36,7 +36,7 @@ $(function() {
 							$.ajax({
 								type : "POST",
 								contentType : "application/json",
-								url : "/monetize/editar",
+								url : "/monetize/editarPerfilUsuario",
 								data : JSON.stringify(data),
 								dataType : 'json',
 								timeout : 10000,

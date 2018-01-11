@@ -16,7 +16,7 @@
 	</a>
 
 		<ul class="dropdown-menu dropdown-user">
-			<li><a href="${pageContext.request.contextPath}/user"><i
+			<li><a href="${pageContext.request.contextPath}/home/user"><i
 					class="fa fa-user fa-fw"></i> Perfil do usuário</a></li>
 			<li class="divider"></li>
 			<li><a href="${pageContext.request.contextPath}/logout"> <i

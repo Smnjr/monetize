@@ -95,7 +95,6 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	@Transactional(readOnly = true)
 	public Boolean isUsernameValido(String userName, String usernameUsuarioLogado) throws ApplicationException {
 		return usuarioDao.isUsernameValido(userName, usernameUsuarioLogado);
-
 	}
 
 	private void validarComposicaoEmail(String email) throws BusinessException {

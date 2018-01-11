@@ -6,7 +6,7 @@ import br.com.sistema.model.Usuario;
 public interface UsuarioDao extends GenericDao<Usuario, Integer> {
 
 	Usuario findByLogin(String username);
-
+	
 	Boolean isUsernameValido(String username, String usernameUsuarioLogado) throws ApplicationException;
 
 }
