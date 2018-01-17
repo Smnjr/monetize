@@ -1,5 +1,3 @@
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources//jquery-validation/jquery.validate.js"> </script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/localization/messages_pt_BR.js"> </script>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:url var="home" value="/" scope="request" />
 <div id="page-wrapper" style="min-height: 120px;">
