@@ -9,9 +9,5 @@
 		<put-attribute name="body" value="/pages/protected/user/user.jsp" />
 	</definition>
 
-	<definition name="user" id="user" extends="template">
-		<put-attribute name="body" value="/pages/protected/user/user.jsp" />
-	</definition>
-
 </tiles-definitions>
 	

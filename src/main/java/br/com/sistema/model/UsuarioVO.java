@@ -1,25 +1,19 @@
 package br.com.sistema.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import org.codehaus.jackson.map.annotate.JsonView;
 
 public class UsuarioVO {
 
-	@JsonView(Views.Public.class)
 	private Long id;
 
-	@JsonView(Views.Public.class)
 	private String username;
 
-	@JsonView(Views.Public.class)
 	private String name;
 
-	@JsonView(Views.Public.class)
 	private String email;
 
-	@JsonView(Views.Public.class)
 	private String password;
 
-	@JsonView(Views.Public.class)
 	private String confirmacaoSenha;
 	
 	public Long getId() {

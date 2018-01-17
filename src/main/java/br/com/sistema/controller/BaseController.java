@@ -37,23 +37,6 @@ public class BaseController {
 		return nome;
 	}
 
-	protected boolean isAuthenticated() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken)
-				&& authentication.isAuthenticated();
-	}
-
-	protected Usuario getUsuarioLogado() {
-		Object usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Usuario usuario;
-		if (usuarioLogado instanceof UserDetails) {
-			String username = ((UserDetails) usuarioLogado).getUsername();
-			usuario = usuarioService.findByLogin(username);
-		} else {
-			usuario = (Usuario) usuarioLogado;
-		}
-		return usuario;
-	}
 
 	protected List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
