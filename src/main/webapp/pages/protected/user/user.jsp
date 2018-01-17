@@ -11,13 +11,13 @@
 		<div class="row">
 			<div class="col-lg-12">
 
-				<h1 class="page-header">Perfil de usuário</h1>
+				<h1 class="page-header">Perfil de usuï¿½rio</h1>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-lg-10">
 				<div class="panel panel-default">
-					<div class="panel-heading">Informações do usuário:</div>
+					<div class="panel-heading">Informaï¿½ï¿½es do usuï¿½rio:</div>
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-8">
@@ -28,13 +28,13 @@
 									<div class="form-group" id="userFormGroup">
 										<input type="text" name="username" tabindex="1" id="user"
 											value="${usuario.username}" autocomplete="off"
-											placeholder="Login do usuário" class="form-control"
+											placeholder="Login do usuï¿½rio" class="form-control"
 											minlength="5" maxlength="20" required />
 
 									</div>
 									<div class="form-group" id="userNameFormGroup">
 										<input type="text" name="nome" tabindex="1" id="name"
-											autocomplete="off" placeholder="Nome do usuário"
+											autocomplete="off" placeholder="Nome do usuï¿½rio"
 											value="${usuario.nome}" class="form-control" minlength="5"
 											maxlength="20" required />
 									</div>
@@ -58,7 +58,7 @@
 										<input type="password" name="confirmacaoSenha"
 											value="${usuario.password}" id="confirmPassword"
 											class="form-control" autocomplete="off" tabindex="4"
-											placeholder="Confirmação de senha" minlength="5"
+											placeholder="Confirmaï¿½ï¿½o de senha" minlength="5"
 											maxlength="20" required />
 									</div>
 

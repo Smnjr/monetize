@@ -17,7 +17,6 @@
 		<property name="hibernate.c3p0.timeout">300</property>
 		<property name="hibernate.c3p0.max_statements">50</property>
 		<property name="hibernate.c3p0.idle_test_period">3000</property>
-		
 		<mapping class="br.com.sistema.model.Pessoa" />
 		<mapping class="br.com.sistema.model.Perfil" />
 		<mapping class="br.com.sistema.model.Usuario" />

@@ -84,6 +84,16 @@ public class UsuarioController extends BaseController {
 		return new ModelAndView("home");
 	}
 
+	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
+	public ModelAndView user(Model model) {
+		if (isAuthenticated()) {
+			Usuario user = getUsuarioLogado();
+			user.setPassword(null);
+			model.addAttribute("usuario", user);
+		}
+		return new ModelAndView("user");
+	}
+
 
 	/**
 	 * Efetua registro, loga em seguida.
