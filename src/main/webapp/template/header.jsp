@@ -5,7 +5,7 @@
 		<span class="icon-bar"></span> <span class="icon-bar"></span>
 	</button>
 
-	<a class="navbar-brand" href="${pageContext.request.contextPath}/home">
+	<a class="navbar-brand" href="${pageContext.request.contextPath}/principal">
 		Monetize </a>
 </div>
 

@@ -31,16 +31,14 @@
 <!--[if lt IE 9]>
 	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
+<![endif]-->
 </head>
 
 <body>
-<input type="hidden" id="csrfToken" value="${_csrf.token}"/>
-<input type="hidden" id="csrfHeader" value="${_csrf.headerName}"/>
-
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+			style="margin-bottom: 0">
 			<!-- /.navbar-header -->
 
 			<!-- Header -->
@@ -55,10 +53,13 @@
 	</div>
 
 	<!-- js -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js">   </script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js">
+	</script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/sb-admin-2.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js">   </script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js">
+		
+	</script>
 
 </body>
 </html>
