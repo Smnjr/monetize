@@ -1,21 +1,16 @@
 package br.com.sistema.controller;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Utilities;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -23,7 +18,6 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
-import br.com.sistema.model.UsuarioVO;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
@@ -64,10 +57,10 @@ public class UsuarioController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/login")
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+	public ModelAndView login(
+			@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) throws ApplicationException  {
 		ModelAndView model = new ModelAndView();
-		model.addObject("usuario", new Usuario());
 		if (error != null) {
 			model.addObject("mensagem",
 					new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
@@ -77,7 +70,19 @@ public class UsuarioController extends BaseController {
 	}
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-	public ModelAndView home(Model model) {
+	public ModelAndView home(Model model) throws ApplicationException {
+		if (isAuthenticated()) {
+			Usuario usuarioLogado = getUsuarioLogado();
+			model.addAttribute("usuario", usuarioLogado);
+			usuarioLogado.setUltimoLogin(new Date());
+			usuarioService.update(usuarioLogado);
+		}
+		return new ModelAndView("home");
+	}
+	
+	
+	@RequestMapping(value = { "/principal" }, method = RequestMethod.GET)
+	public ModelAndView principal(Model model) {
 		if (isAuthenticated()) {
 			model.addAttribute("usuario", getUsuarioLogado());
 		}
@@ -85,7 +90,7 @@ public class UsuarioController extends BaseController {
 	}
 
 	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
-	public ModelAndView user(Model model) {
+	public ModelAndView user(Model model)  {
 		if (isAuthenticated()) {
 			Usuario user = getUsuarioLogado();
 			user.setPassword(null);
@@ -102,10 +107,12 @@ public class UsuarioController extends BaseController {
 	 * @param model
 	 * @param req
 	 * @return
+	 * @throws ApplicationException 
 	 */
+	
 	@ResponseBody
 	@RequestMapping(value = "/salvarUsuario", method = RequestMethod.POST)
-	public ModelAndView executarRegistro(Usuario usuario, HttpServletRequest request, Model model) {
+	public ModelAndView executarRegistro(Usuario usuario, HttpServletRequest request, Model model) throws ApplicationException {
 		try {
 			logger.debug("Salvando o usuario " + usuario.getUsername());
 			service.create(usuario);

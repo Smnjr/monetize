@@ -34,7 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		logger.debug("Autenticando o usuario={" + username + "}");
 		Usuario usuario = userService.findByLogin(username);
 		validaUsuario(usuario);
 		return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, getGrantedAuthorities(usuario));
