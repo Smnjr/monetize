@@ -19,7 +19,7 @@
 		<intercept-url pattern="/login"   				  access="permitAll"  							 />
 		<intercept-url pattern="/home"					  access="isAuthenticated()" 					 />
 		<intercept-url pattern="/user"					  access="isAuthenticated()" 					 />
-		<intercept-url pattern="/home/editar"					  access="isAuthenticated()" 					 />
+		<intercept-url pattern="/home/editar"			  access="isAuthenticated()" 					 />
 	
 <intercept-url pattern="/user"                 access="isAuthenticated()"               />
 	
