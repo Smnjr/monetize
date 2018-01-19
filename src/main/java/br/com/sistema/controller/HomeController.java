@@ -38,7 +38,7 @@ public class HomeController extends BaseController  {
 
 	@ResponseBody
 	@RequestMapping(value = "/editarPerfilUsuario", method = RequestMethod.POST)
-	public void atualizar(@RequestBody UsuarioVO usuarioVo) {
+	public ResponseEntity<Void> atualizar(@RequestBody UsuarioVO usuarioVo) {
 		try {
 			Usuario usuario = getUsuarioLogado();
 			usuario.setEmail(usuarioVo.getEmail());
@@ -49,6 +49,6 @@ public class HomeController extends BaseController  {
 		} catch (ApplicationException ex) {
 			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 }
