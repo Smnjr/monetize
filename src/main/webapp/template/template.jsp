@@ -53,13 +53,10 @@
 	</div>
 
 	<!-- js -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js">
-	</script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/sb-admin-2.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js">
-		
-	</script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js"></script>
 
 </body>
 </html>
