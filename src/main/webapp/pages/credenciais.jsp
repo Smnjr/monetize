@@ -19,8 +19,6 @@
 </head>
 
 <body>
-<input type="hidden" id="csrfToken" value="${_csrf.token}"/>
-<input type="hidden" id="csrfHeader" value="${_csrf.headerName}"/>
 	<div id="cnt" class="container">
 	<c:if test="${not empty mensagem}">
       <div class="${mensagem.tipoMensagem.classeCss}">${mensagem.texto}</div>

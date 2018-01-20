@@ -6,11 +6,11 @@
 	<form id="user_edit_form" >
 		<div class="row">
 			<div class="col-lg-12">
-
 				<h1 class="page-header">Perfil de usuário</h1>
 			</div>
 		</div>
 		<div class="row">
+		<div id="mensagem"></div>
 			<div class="col-lg-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">Informações do usuário:</div>

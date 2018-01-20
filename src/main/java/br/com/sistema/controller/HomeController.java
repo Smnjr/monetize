@@ -1,7 +1,10 @@
 package br.com.sistema.controller;
 
+import java.util.Locale;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,11 @@ import br.com.sistema.util.GenerateHashPasswordUtil;
 @Controller
 public class HomeController extends BaseController  {
 
+	Locale ptBR = new Locale("pt", "BR");
+
+	@Autowired
+	MessageSource messageSource;
+
 	static final Logger logger = Logger.getLogger(HomeController.class);
 
 	@Autowired(required = true)
@@ -38,7 +46,7 @@ public class HomeController extends BaseController  {
 
 	@ResponseBody
 	@RequestMapping(value = "/editarPerfilUsuario", method = RequestMethod.POST)
-	public ResponseEntity<Void> atualizar(@RequestBody UsuarioVO usuarioVo) {
+	public ResponseEntity<?> atualizar(@RequestBody UsuarioVO usuarioVo) {
 		try {
 			Usuario usuario = getUsuarioLogado();
 			usuario.setEmail(usuarioVo.getEmail());
@@ -46,9 +54,9 @@ public class HomeController extends BaseController  {
 			String passwordHash = GenerateHashPasswordUtil.generateHash(usuarioVo.getPassword());
 			usuario.setPassword(passwordHash);
 			service.update(usuario);
+			return new ResponseEntity<String>(messageSource.getMessage("save.success", null, ptBR), HttpStatus.OK);
 		} catch (ApplicationException ex) {
-			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

@@ -35,18 +35,23 @@ $(function() {
 
 					$.ajax({
 						type : "POST",
-						contentType : "application/json",
+						contentType: 'application/json; charset=utf-8',
 						url : "/monetize/editarPerfilUsuario",
 						data : JSON.stringify(data),
-						dataType : 'json',
-						timeout : 1000,
+						cache: false,
+						timeout : 100000,
 						success : function(data) {
-							alert("SUCCESS!");
+							display(data,"alert alert-success");
 						},
 						error : function(e) {
+							display(e.responseText,"alert alert-danger");
 							console.log("ERROR: ", e);
+						},
+						done : function(e) {
+							console.log("DONE", e.responseText);
 						}
 					});
+					event.preventDefault();
 				},
 
 				rules : {
@@ -90,6 +95,9 @@ $(function() {
 					}
 				}
 			});
-
-
+	
+	function display(data, classe) {
+	$('#mensagem').addClass(classe);
+	$('#mensagem').html(data);
+	}
 });

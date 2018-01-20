@@ -48,10 +48,11 @@
 		</nav>
 
 		<!-- Body Page -->
-		<tiles:insertAttribute name="body" />
-		<!-- /#wrapper -->
+		<tiles:insertAttribute name="body"></tiles:insertAttribute>
+			
+			
+			<!-- /#wrapper -->
 	</div>
-
 	<!-- js -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/metisMenu/metisMenu.min.js"></script>
