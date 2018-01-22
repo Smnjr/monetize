@@ -22,7 +22,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,8 +30,6 @@ import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
 import br.com.sistema.seguranca.CustomUserDetailsService;
 import br.com.sistema.service.UsuarioService;
-import br.com.sistema.util.Mensagem;
-import br.com.sistema.util.TipoMensagem;
 
 @Controller
 @RequestMapping("/")
@@ -55,26 +52,24 @@ public class UsuarioController extends BaseController {
 	MessageSource messageSource;
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
-	public String login(ModelMap model) {
+	public ModelAndView index(Model model) {
 		try {
 			service.verificarPerfisExistentes();
 		} catch (ApplicationException e) {
 			logger.error(e.getMessage());
 		}
-		return "/credenciais.jsp";
+		return new ModelAndView("/credenciais.jsp");
 	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/login")
-	public ModelAndView login(
-			@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) throws ApplicationException  {
-		ModelAndView model = new ModelAndView();
-		if (error != null) {
-			model.addObject("mensagem",
-					new Mensagem(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"), TipoMensagem.ERRO));
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/login")
+	public  ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletRequest request, Model model) throws ApplicationException  {
+		try {
+			efetuarLogin(usuario, request, model);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (ApplicationException e) {
+			return new ResponseEntity<String>(e.getCause().getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		model.setViewName("/credenciais.jsp");
-		return model;
 	}
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
@@ -147,12 +142,12 @@ public class UsuarioController extends BaseController {
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView logoutPage(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
-		return "redirect:/login?logout";
+		return index(model);
 	}
 
 	private String getErrorMessage(HttpServletRequest request, String key) {

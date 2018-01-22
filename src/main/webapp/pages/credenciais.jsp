@@ -6,15 +6,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Monetize</title>
-<script type="text/javascript" src="resources/jquery/jquery-3.2.1.js"> </script>
-<script type="text/javascript"  src="resources//bootstrap/js/bootstrap.js"> </script>
-<script type="text/javascript" src="resources//jquery-validation/jquery.validate.js"> </script> 
-<script type="text/javascript" src="resources/jquery-validation/localization/messages_pt_BR.js"> </script>
-<script type="text/javascript" src="resources/js/login.js">   </script>
-<script type="text/javascript" src="resources/nprogress-master/nprogress.js"> </script>
-<link rel="stylesheet" id="bootstrap-css" href="resources/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="resources/css/credenciais.css">
-<link rel="stylesheet" href="resources/nprogress-master/nprogress.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js"> </script>
+<script type="text/javascript"  src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/jquery.validate.js"> </script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/localization/messages_pt_BR.js"> </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/login.js">   </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js"> </script>
+<link rel="stylesheet" id="bootstrap-css" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/credenciais.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
 
 </head>
 
