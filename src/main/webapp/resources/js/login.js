@@ -41,9 +41,28 @@ $(function() {
 
 	$('#login-form').validate({
 		submitHandler : function(form) {
+			$( '#mensagem' ).html( '' );
+			var data = {}
+
+			data["password"] = $("#password").val();
+			data["username"] = $("#username").val();
+
 			NProgress.start();
-			$('#login-form').attr('action', '/monetize/j_security_check');
-			$('#login-form').submit();
+
+			$.ajax({
+				type : "POST",
+				contentType: 'application/json',
+				url : "/monetize/login",
+				data : JSON.stringify(data),
+				timeout : 10000,
+				error :function(e) {
+					display(e.responseText,"alert alert-danger");
+					console.log("ERROR: ", e);
+				},
+				success: function(result) {
+					$(location).attr('href',"/monetize/home");
+				}
+			});
 			NProgress.done();
 		},
 
