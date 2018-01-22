@@ -28,7 +28,7 @@ import br.com.sistema.util.TipoMensagem;
 @Service
 public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> implements UsuarioService {
 
-	static final Logger logger = Logger.getLogger(GenericServiceImpl.class);
+	static final Logger logger = Logger.getLogger(UsuarioServiceImpl.class);
 
 	private UsuarioDao usuarioDao;
 
@@ -51,13 +51,14 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	@Transactional
 	public void create(Usuario usuario) throws BusinessException, ApplicationException {
 		try {
+			
 			validarPreenchimentoNome(usuario.getUsername());
 			validarPreenchimentoEmail(usuario.getEmail());
 			validarComposicaoEmail(usuario.getEmail());
 			validarPreenchimentoSenha(usuario.getPassword());
 			validarPreenchimentoConfirmacaoSenha(usuario.getConfirmacaoSenha());
 			validarComposicaoConfirmacaoSenha(usuario.getPassword(), usuario.getConfirmacaoSenha());
-
+			
 			Perfil profileUser = new Perfil();
 			profileUser = getPerfilUser();
 			usuario.setPerfilUsuario(profileUser);
@@ -65,11 +66,10 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 			usuario.setDataCadastro(new Date());
 			String passwordHash = GenerateHashPasswordUtil.generateHash(usuario.getPassword());
 			usuario.setPassword(passwordHash);
-
 			usuarioDao.save(usuario);
 		} catch (BusinessException ex) {
 			logger.error("Erro ao salvar registro " + ex.getMessage());
-			throw new BusinessException(ex.getMessage(), ex, ex.getTipoMensagem(), messageSource.getMessage("create.error", null, ptBR));
+			throw new BusinessException(ex);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	}
 
 	private void validarComposicaoEmail(String email) throws BusinessException {
-		if (!isEmailValid(email)) {
+		if (isEmailValid(email)) {
 			throw new BusinessException(messageSource.getMessage("email.invalid", null, ptBR), TipoMensagem.AVISO);
 		}
 	}

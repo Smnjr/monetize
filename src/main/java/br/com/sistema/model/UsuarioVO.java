@@ -1,7 +1,5 @@
 package br.com.sistema.model;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
 public class UsuarioVO {
 
 	private Long id;

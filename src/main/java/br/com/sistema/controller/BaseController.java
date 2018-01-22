@@ -3,21 +3,30 @@ package br.com.sistema.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.service.PerfilService;
 import br.com.sistema.service.UsuarioService;
 
 public class BaseController {
 
 	@Autowired
 	UsuarioService usuarioService;
+
+	@Autowired
+	private PerfilService perfilService;
+
+	static final Logger logger = Logger.getLogger(BaseController.class);
 
 	protected String getPrincipal() {
 		String userName = null;
@@ -40,11 +49,17 @@ public class BaseController {
 
 	protected List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
+		try {
+			authorities.add(new SimpleGrantedAuthority(
+					perfilService.find(user.getPerfilUsuario().getId()).getTipoPerfil().getPerfil()));
+		} catch (ApplicationException e) {
+			logger.info("Erro ao obter o perfil :" + e.getMessage());
+			e.printStackTrace();
+		}
 		return authorities;
 	}
 
-	
+
 
 	protected boolean isAuthenticated() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +77,11 @@ public class BaseController {
 			usuario = (Usuario) usuarioLogado;
 		}
 		return usuario;
+	}
+
+	protected User getUser(Usuario usuario){
+		User user = new User(usuario.getUsername(), usuario.getPassword(), getGrantedAuthorities(usuario));
+		return user;
 	}
 
 }

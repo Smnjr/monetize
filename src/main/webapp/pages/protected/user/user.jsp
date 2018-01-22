@@ -10,32 +10,29 @@
 			</div>
 		</div>
 		<div class="row">
-		<div id="mensagem"></div>
 			<div class="col-lg-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">Informações do usuário:</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-lg-8">
-								<form id="register-form" name="registerForm" role="form" >
-								
+							<div class="col-sm-6">
 								<input type="hidden" id="id" name ="id" value="${usuario.id}"/>
 
-									<div class="form-group" id="userFormGroup">
+									<div class="form-group form-group il-form-spaccing" id="userFormGroup">
 										<input type="text" name="username" tabindex="1" id="user"
 											value="${usuario.username}" autocomplete="off"
 											placeholder="Login do usuário" class="form-control"
 											minlength="5" maxlength="20" required />
 
 									</div>
-									<div class="form-group" id="userNameFormGroup">
+									<div class="form-group form-group il-form-spaccing" id="userNameFormGroup">
 										<input type="text" name="nome" tabindex="1" id="name"
 											autocomplete="off" placeholder="Nome do usu\u00e1rio"
 											value="${usuario.nome}" class="form-control" minlength="5"
 											maxlength="20" required />
 									</div>
 
-									<div class="form-group">
+									<div class="form-group form-group il-form-spaccing">
 										<div class="input-group">
 											<span class="input-group-addon">@</span> <input type="email"
 												name="email" id="email" value="${usuario.email}"
@@ -43,14 +40,14 @@
 												required>
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group form-group il-form-spaccing">
 										<input type="password" name="password" id="pass"
 											value="${usuario.password}" class="form-control"
 											autocomplete="off" tabindex="3" placeholder="Senha"
 											minlength="5" maxlength="20" required />
 									</div>
-
-									<div class="form-group">
+									
+									<div class="form-group form-group il-form-spaccing">
 										<input type="password" name="confirmacaoSenha"
 											value="${usuario.password}" id="confirmPassword"
 											class="form-control" autocomplete="off" tabindex="4"
@@ -58,7 +55,7 @@
 											maxlength="20" required />
 									</div>
 
-									<div class="form-group">
+									<div class="form-group form-group il-form-spaccing">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
 												<input name="register-submit" id="register-submit"
@@ -66,15 +63,9 @@
 													value="Salvar">
 											</div>
 										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
+										</div>
+										</div>
+										</div></div></div></div>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/user.js"></script>
 </div>
 

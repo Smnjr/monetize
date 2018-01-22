@@ -25,6 +25,8 @@ $(function() {
 	.validate(
 			{
 				submitHandler : function() {
+					$( '#mensagem' ).html( '' );
+					NProgress.start();
 					var data = {}
 					data["confirmacaoSenha"] = $("#confirmPassword").val();
 					data["password"] = $("#pass").val();
@@ -52,6 +54,7 @@ $(function() {
 						}
 					});
 					event.preventDefault();
+					NProgress.done();
 				},
 
 				rules : {
@@ -62,6 +65,10 @@ $(function() {
 						remote : {
 							url : "/monetize/isUsernameValido",
 							type : "post",
+							error : function(e) {
+								display(e.responseText,"alert alert-danger");
+								console.log("ERROR: ", e);
+							}
 						},
 					},
 					name : {
@@ -97,7 +104,9 @@ $(function() {
 			});
 	
 	function display(data, classe) {
-	$('#mensagem').addClass(classe);
-	$('#mensagem').html(data);
+		var div = '<div id="mensagem"></div>';
+		$('.row').prepend(div);
+		$('#mensagem').addClass(classe);
+		$('#mensagem').html(data);
 	}
 });

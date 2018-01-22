@@ -1,23 +1,25 @@
 package br.com.sistema.controller;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.exception.BusinessException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.seguranca.CustomUserDetailsService;
 import br.com.sistema.service.UsuarioService;
 import br.com.sistema.util.Mensagem;
 import br.com.sistema.util.TipoMensagem;
@@ -39,12 +42,17 @@ public class UsuarioController extends BaseController {
 	RequestCache requestCache;
 
 	@Autowired
-	protected AuthenticationManager authenticationManager;
+	protected CustomUserDetailsService customUserDetailsService;
 
 	static final Logger logger = Logger.getLogger(UsuarioController.class);
 
 	@Autowired(required = true)
 	private UsuarioService service;
+
+	Locale ptBR = new Locale("pt", "BR");
+
+	@Autowired
+	MessageSource messageSource;
 
 	@RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT})
 	public String login(ModelMap model) {
@@ -79,8 +87,8 @@ public class UsuarioController extends BaseController {
 		}
 		return new ModelAndView("home");
 	}
-	
-	
+
+
 	@RequestMapping(value = { "/principal" }, method = RequestMethod.GET)
 	public ModelAndView principal(Model model) {
 		if (isAuthenticated()) {
@@ -107,34 +115,33 @@ public class UsuarioController extends BaseController {
 	 * @param model
 	 * @param req
 	 * @return
-	 * @throws ApplicationException 
+	 * @throws ApplicationException
+	 * @throws BusinessException
 	 */
-	
 	@ResponseBody
 	@RequestMapping(value = "/salvarUsuario", method = RequestMethod.POST)
-	public ModelAndView executarRegistro(Usuario usuario, HttpServletRequest request, Model model) throws ApplicationException {
+	public ResponseEntity<?> executarRegistro(@RequestBody Usuario usuario, Model model, HttpServletRequest request)
+	{
 		try {
-			logger.debug("Salvando o usuario " + usuario.getUsername());
 			service.create(usuario);
-			efetuarLogin(usuario, request);
-		} catch (BusinessException e) {
-			new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		} catch (ApplicationException ex) {
-			new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+			efetuarLogin(usuario, request, model);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (BusinessException ex) {
+			return new ResponseEntity<String>(messageSource.getMessage("create.error", null, ptBR) + ex.getCause().getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (ApplicationException e) {
+			return new ResponseEntity<String>(messageSource.getMessage("create.error", null, ptBR) +  e.getCause().getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return home(model);
 	}
 
-	private void efetuarLogin(Usuario usuario, HttpServletRequest request) throws ApplicationException {
+	private void efetuarLogin(Usuario usuario, HttpServletRequest request, Model model)
+			throws ApplicationException {
 		try {
-			Usuario principal = service.findByLogin(usuario.getUsername());
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(),
-					getGrantedAuthorities(principal));
-			request.getSession();
-			token.setDetails(new WebAuthenticationDetails(request));
-			Authentication authenticatedUser = authenticationManager.authenticate(token);
-			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+			UserDetails userDetails = customUserDetailsService.loadUserByUsername(usuario.getUsername());
+			Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,
+					userDetails.getPassword(), userDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} catch (Exception e) {
+			SecurityContextHolder.getContext().setAuthentication(null);
 			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
 	}
@@ -159,21 +166,25 @@ public class UsuarioController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/isUsernameValido")
-	public Boolean isUsernameValido(String username) {
+	public ResponseEntity<?> isUsernameValido(String username) {
 		logger.warn("Validando o login do usuario " + username);
 		Boolean isValido = false;
 		String nomeUsuarioLogado = null;
 		try {
 			if (isAuthenticated()) {
-				nomeUsuarioLogado = getUsuarioLogado().getUsername();
+				if (getUsuarioLogado() != null) {
+					nomeUsuarioLogado = getUsuarioLogado().getUsername();
+				}
 			}
 			isValido = service.isUsernameValido(username.trim(), nomeUsuarioLogado);
+			return new ResponseEntity<Boolean>(isValido, HttpStatus.OK);
 		} catch (ApplicationException e) {
 			logger.error(e + e.getCause().getMessage());
+			return new ResponseEntity<String>(messageSource.getMessage("user.validate.error", null, ptBR),
+					HttpStatus.BAD_REQUEST);
 		}
-		return isValido;
 	}
-	
 
-	
+
+
 }

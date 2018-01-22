@@ -16,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.sistema.exception.ApplicationException;
 import br.com.sistema.model.Usuario;
+import br.com.sistema.service.PerfilService;
 import br.com.sistema.service.UsuarioService;
 
 @Qualifier("customUserDetailsService")
@@ -31,6 +33,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UsuarioService userService;
 
+	@Autowired
+	private PerfilService perfilService;
+
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,14 +45,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	private void validaUsuario(Usuario usuario) {
-		if (usuario == null) {
+		if (usuario.getId() == null) {
 			throw new UsernameNotFoundException(messageSource.getMessage("usuario.notfound", null, ptBR));
 		}
 	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(Usuario user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPerfilUsuario()));
+		try {
+			authorities.add(new SimpleGrantedAuthority(
+					perfilService.find(user.getPerfilUsuario().getId()).getTipoPerfil().getPerfil()));
+		} catch (ApplicationException e) {
+			logger.info("Erro ao obter o perfil :" + e.getMessage());
+			e.printStackTrace();
+		}
 		return authorities;
 	}
 }

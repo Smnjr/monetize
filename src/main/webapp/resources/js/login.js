@@ -1,6 +1,6 @@
 $(function() {
 	$('#login-form-link').click(function(e) {
-		$('#msgError').remove();
+		$('#mensagem').remove();
 		$('#login-form').delay(100).fadeIn(100);
 		$('#register-form').fadeOut(100);
 		$('#register-form-link').removeClass('active');
@@ -9,7 +9,7 @@ $(function() {
 	});
 
 	$('#register-form-link').click(function(e) {
-		$('#msgError').remove();
+		$('#mensagem').remove();
 		$('#register-form').delay(100).fadeIn(100);
 		$('#login-form').fadeOut(100);
 		$('#login-form-link').removeClass('active');
@@ -64,11 +64,29 @@ $(function() {
 	$('#register-form')
 	.validate(
 			{
-				submitHandler : function() {
+				submitHandler : function(e) {
+					$( '#mensagem' ).html( '' );
+					var data = {}
+					data["confirmacaoSenha"] = $("#confirmPassword").val();
+					data["password"] = $("#pass").val();
+					data["email"] = $("#email").val();
+					data["nome"] = $("#name").val();
+					data["username"] = $("#user").val();
 					NProgress.start();
-					$('#register-form').attr('action',
-					'/monetize/salvarUsuario');
-					$('#register-form').submit();
+					$.ajax({
+						type : "POST",
+						contentType: 'application/json',
+						url : "/monetize/salvarUsuario",
+						data : JSON.stringify(data),
+						timeout : 1000,
+						error :function(e) {
+							display(e.responseText,"alert alert-danger");
+							console.log("ERROR: ", e);
+						},
+						 success: function(result) {
+							  $(location).attr('href',"/monetize/home");
+					        }
+					});
 					NProgress.done();
 				},
 
@@ -80,6 +98,10 @@ $(function() {
 						remote : {
 							url : "/monetize/isUsernameValido",
 							type : "post",
+							error : function(e) {
+								display(e.responseText,"alert alert-danger");
+								console.log("ERROR: ", e);
+							}
 						},
 					},
 					name : {
@@ -113,5 +135,11 @@ $(function() {
 					}
 				}
 			});
-
+	
+	function display(data, classe) {
+		var div = '<div id="mensagem"></div>';
+		$('.panel-body').prepend(div);
+		$('#mensagem').addClass(classe);
+		$('#mensagem').html(data);
+	}
 });

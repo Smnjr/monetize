@@ -17,10 +17,20 @@ public class BusinessException extends Exception {
 		this.tipoMensagem = tipoMensagem;
 		this.errorCode = errorCode;
 	}
+	
+	public BusinessException(String msg) {
+		super(msg);
+	}
+
 
 	public BusinessException(String msg, TipoMensagem tipoMensagem) {
 		super(msg);
 		this.tipoMensagem = tipoMensagem;
+	}
+
+	public BusinessException(String message, String errorCode) {
+		super(message);
+		this.errorCode = errorCode;
 	}
 
 	/**
