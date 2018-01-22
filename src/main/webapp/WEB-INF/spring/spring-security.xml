@@ -9,7 +9,7 @@
 		
 	<global-method-security secured-annotations="enabled" proxy-target-class="true" pre-post-annotations="enabled" />
 	
-	<http pattern="/resources/**" security="none"/>
+	<http pattern="/resources/**" security="none" auto-config="true"/>
 	
 	<http use-expressions="true">
 	<remember-me/>
