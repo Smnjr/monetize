@@ -98,7 +98,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	}
 
 	private void validarComposicaoEmail(String email) throws BusinessException {
-		if (isEmailValid(email)) {
+		if (!isEmailValid(email)) {
 			throw new BusinessException(messageSource.getMessage("email.invalid", null, ptBR), TipoMensagem.AVISO);
 		}
 	}
