@@ -1,8 +1,8 @@
 $(function() {
 	$('#login-form-link').click(function(e) {
 		$('#mensagem').remove();
-		$('#login-form').delay(100).fadeIn(100);
-		$('#register-form').fadeOut(100);
+		$('#login-form').delay(150).fadeIn(150);
+		$('#register-form').fadeOut(150);
 		$('#register-form-link').removeClass('active');
 		$(this).addClass('active');
 		e.preventDefault();
@@ -10,8 +10,8 @@ $(function() {
 
 	$('#register-form-link').click(function(e) {
 		$('#mensagem').remove();
-		$('#register-form').delay(100).fadeIn(100);
-		$('#login-form').fadeOut(100);
+		$('#register-form').delay(150).fadeIn(150);
+		$('#login-form').fadeOut(150);
 		$('#login-form-link').removeClass('active');
 		$(this).addClass('active');
 		e.preventDefault();
