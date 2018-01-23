@@ -51,14 +51,14 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	@Transactional
 	public void create(Usuario usuario) throws BusinessException, ApplicationException {
 		try {
-			
+
 			validarPreenchimentoNome(usuario.getUsername());
 			validarPreenchimentoEmail(usuario.getEmail());
 			validarComposicaoEmail(usuario.getEmail());
 			validarPreenchimentoSenha(usuario.getPassword());
 			validarPreenchimentoConfirmacaoSenha(usuario.getConfirmacaoSenha());
 			validarComposicaoConfirmacaoSenha(usuario.getPassword(), usuario.getConfirmacaoSenha());
-			
+
 			Perfil profileUser = new Perfil();
 			profileUser = getPerfilUser();
 			usuario.setPerfilUsuario(profileUser);

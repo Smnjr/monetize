@@ -45,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	private void validaUsuario(Usuario usuario) {
-		if (usuario.getId() == null) {
+		if (usuario == null || usuario.getId() == null) {
 			throw new UsernameNotFoundException(messageSource.getMessage("usuario.notfound", null, ptBR));
 		}
 	}

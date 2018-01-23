@@ -25,7 +25,7 @@ $(function() {
 	.validate(
 			{
 				submitHandler : function() {
-					$( '#mensagem' ).html( '' );
+					$('#mensagem').remove();
 					NProgress.start();
 					var data = {}
 					data["confirmacaoSenha"] = $("#confirmPassword").val();

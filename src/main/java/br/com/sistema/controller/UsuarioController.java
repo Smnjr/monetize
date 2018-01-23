@@ -14,11 +14,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,15 +60,15 @@ public class UsuarioController extends BaseController {
 		}
 		return new ModelAndView("/credenciais.jsp");
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public  ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletRequest request, Model model) throws ApplicationException  {
 		try {
 			efetuarLogin(usuario, request, model);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (ApplicationException e) {
-			return new ResponseEntity<String>(e.getCause().getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (UsernameNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -123,21 +123,25 @@ public class UsuarioController extends BaseController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (BusinessException ex) {
 			return new ResponseEntity<String>(messageSource.getMessage("create.error", null, ptBR) + ex.getCause().getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (ApplicationException e) {
+		} catch (UsernameNotFoundException e) {
 			return new ResponseEntity<String>(messageSource.getMessage("create.error", null, ptBR) +  e.getCause().getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (ApplicationException e) {
+			return new ResponseEntity<String>(
+					messageSource.getMessage("create.error", null, ptBR) + e.getCause().getMessage(),
+					HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	private void efetuarLogin(Usuario usuario, HttpServletRequest request, Model model)
-			throws ApplicationException {
+			throws UsernameNotFoundException {
 		try {
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(usuario.getUsername());
 			Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,
 					userDetails.getPassword(), userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-		} catch (Exception e) {
+		} catch (UsernameNotFoundException e) {
 			SecurityContextHolder.getContext().setAuthentication(null);
-			throw new ApplicationException(getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+			throw new UsernameNotFoundException(e.getMessage());
 		}
 	}
 
@@ -150,14 +154,6 @@ public class UsuarioController extends BaseController {
 		return index(model);
 	}
 
-	private String getErrorMessage(HttpServletRequest request, String key) {
-		Exception exception = (Exception) request.getSession().getAttribute(key);
-		String error = "";
-		if(exception!=null && !exception.equals("")){
-			error = exception.getMessage();
-		}
-		return error;
-	}
 
 	@ResponseBody
 	@RequestMapping(value = "/isUsernameValido")

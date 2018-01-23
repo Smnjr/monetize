@@ -41,7 +41,7 @@ $(function() {
 
 	$('#login-form').validate({
 		submitHandler : function(form) {
-			$( '#mensagem' ).html( '' );
+			$('#mensagem').remove();
 			var data = {}
 
 			data["password"] = $("#password").val();
@@ -84,7 +84,7 @@ $(function() {
 	.validate(
 			{
 				submitHandler : function(e) {
-					$( '#mensagem' ).html( '' );
+					$('#mensagem').remove();
 					var data = {}
 					data["confirmacaoSenha"] = $("#confirmPassword").val();
 					data["password"] = $("#pass").val();
