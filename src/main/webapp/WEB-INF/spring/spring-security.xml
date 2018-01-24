@@ -16,15 +16,15 @@
 		<intercept-url pattern="/pages/protected/admin/*" access="hasAnyRole('ROLE_ADMIN')" 			 />
 		<intercept-url pattern="/pages/protected/user/*"  access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
 		<intercept-url pattern="/pages/protected/*" 	  access="isAuthenticated()" 					 />
-		<intercept-url pattern="/login"   				  access="permitAll"  							 />
+		<intercept-url pattern="/"   				  	  access="permitAll"  							 />
 		<intercept-url pattern="/home"					  access="isAuthenticated()" 					 />
 		<intercept-url pattern="/user"					  access="isAuthenticated()" 					 />
 		<intercept-url pattern="/home/editar"			  access="isAuthenticated()" 					 />
-	
-<intercept-url pattern="/user"                 access="isAuthenticated()"               />
+		<intercept-url pattern="/user"                 	  access="isAuthenticated()"               		 />
 	
 	<form-login 
-			default-target-url="/home"
+			default-target-url="/"
+			login-page="/"
 			password-parameter="password"
 			username-parameter="username"
 			authentication-failure-url="/login?error" 

@@ -16,13 +16,13 @@
 		
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/font-awesome/css/font-awesome.css">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/gritter/css/jquery.gritter.css">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/lineicons/style.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style-responsive.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
-	
-	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	    <!--[if lt IE 9]>
 	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -40,7 +40,7 @@
 
 		<!--main content start-->
 		<section id="main-content">
-			<section class="wrapper">
+			<section class="wrapper site-min-height">
 				<!-- Body Page -->
 				<tiles:insertAttribute name="body">
 				</tiles:insertAttribute>
@@ -52,18 +52,18 @@
 	<!-- js -->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery-ui-1.9.2.custom.min.js">  </script>		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery.ui.touch-punch.min.js">  </script>
+		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-accordion/jquery.dcjqaccordion.2.7.js">  </script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-scrollTo/jquery.scrollTo.min.js">  </script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-nicescrool/jquery.nicescroll.js">  </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/gritter/js/jquery.gritter.js">  </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/gritter/js/gritter-conf.js">  </script>
 		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/form-component.js"> </script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/jquery.validate.js"> </script> 
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/localization/messages_pt_BR.js"> </script>
-		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js"></script>
-	
-	</body>
+
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common-scripts.js">  </script>
+
+</body>
 </html>

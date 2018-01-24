@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:url var="home" value="/" scope="request" />
 
 <h3><i class="fa fa-angle-right"></i> Form Components</h3>
           	
