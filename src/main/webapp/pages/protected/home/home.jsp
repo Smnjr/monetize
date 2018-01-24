@@ -1,31 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:url var="home" value="/" scope="request" />
-<div id="page-wrapper" style="min-height: 120px;">
-<div id="feedback" class=""alert alert-danger">
 
+<h3><i class="fa fa-angle-right"></i> Form Components</h3>
+          	
+          	<!-- BASIC FORM ELELEMNTS -->
+<div class="row mt">
+	<div class="col-lg-12">
+		<div class="form-panel">
+			<h4 class="mb">
+				<i class="fa fa-angle-right"></i> Form Elements
+			</h4>
 
-</div>
-	<form id="user_edit_form" >
-		<div class="row">
-			<div class="col-lg-12">
-
-				<h1 class="page-header">Home</h1>
-			</div>
 		</div>
-		<div class="row">
-			<div class="col-lg-10">
-				<div class="panel panel-default">
-					<div class="panel-heading">Principal</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-8">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
+	</div>
 </div>
 
 

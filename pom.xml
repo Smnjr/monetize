@@ -4,7 +4,7 @@
 	<groupId>br.com.monetize</groupId>
 	<artifactId>monetize</artifactId>
 	<version>1.0.0</version>
-	<packaging>ejb</packaging>
+	<packaging>war</packaging>
 
 
 	<name>monetize</name>
@@ -235,13 +235,14 @@
 			<artifactId>dozer</artifactId>
 			<version>5.4.0</version>
 		</dependency>
-
+<!-- 
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-
+ -->
+ 
 	</dependencies>
 
 	<build>

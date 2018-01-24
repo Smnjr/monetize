@@ -1,59 +1,85 @@
-<div class="navbar-default navbar-static-side" role="navigation">
-	<div class="sidebar-collapse">
-		<ul class="nav" id="side-menu">
-			<li class="sidebar-search">
-				<div class="input-group custom-search-form">
-					<input type="text" class="form-control" placeholder="Search...">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">
-							<i class="fa fa-search"></i>
-						</button>
-					</span>
-				</div> <!-- /input-group -->
-			</li>
-			<li><a href="index.html"><i class="fa fa-dashboard fa-fw"></i>
-					Dashboard</a></li>
-			<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-					Charts<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="flot.html">Flot Charts</a></li>
-					<li><a href="morris.html">Morris.js Charts</a></li>
-				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
-					Tables</a></li>
-			<li><a href="forms.html"><i class="fa fa-edit fa-fw"></i>
-					Forms</a></li>
-			<li><a href="#"><i class="fa fa-wrench fa-fw"></i> UI
-					Elements<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="panels-wells.html">Panels and Wells</a></li>
-					<li><a href="buttons.html">Buttons</a></li>
-					<li><a href="notifications.html">Notifications</a></li>
-					<li><a href="typography.html">Typography</a></li>
-					<li><a href="icons.html"> Icons</a></li>
-					<li><a href="grid.html">Grid</a></li>
-				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="#"><i class="fa fa-sitemap fa-fw"></i>
-					Multi-Level Dropdown<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="#">Second Level Item</a></li>
-					<li><a href="#">Second Level Item</a></li>
-					<li><a href="#">Third Level <span class="fa arrow"></span></a>
-						<ul class="nav nav-third-level">
-							<li><a href="#">Third Level Item</a></li>
-							<li><a href="#">Third Level Item</a></li>
-							<li><a href="#">Third Level Item</a></li>
-							<li><a href="#">Third Level Item</a></li>
-						</ul> <!-- /.nav-third-level --></li>
-				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="#"><i class="fa fa-files-o fa-fw"></i> Sample
-					Pages<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="blank.html">Blank Page</a></li>
-					<li><a href="login.html">Login Page</a></li>
-				</ul> <!-- /.nav-second-level --></li>
-		</ul>
-	</div>
-	<!-- /.sidebar-collapse -->
-</div>
-<!-- /.navbar-static-side -->
+<!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered">Marcel Newman</h5>
+              	  	
+                  <li class="mt">
+                      <a class="active" href="index.html">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-desktop"></i>
+                          <span>UI Elements</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="general.html">General</a></li>
+                          <li><a  href="buttons.html">Buttons</a></li>
+                          <li><a  href="panels.html">Panels</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-cogs"></i>
+                          <span>Components</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="calendar.html">Calendar</a></li>
+                          <li><a  href="gallery.html">Gallery</a></li>
+                          <li><a  href="todo_list.html">Todo List</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-book"></i>
+                          <span>Extra Pages</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="blank.html">Blank Page</a></li>
+                          <li><a  href="login.html">Login</a></li>
+                          <li><a  href="lock_screen.html">Lock Screen</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Forms</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="form_component.html">Form Components</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-th"></i>
+                          <span>Data Tables</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="basic_table.html">Basic Table</a></li>
+                          <li><a  href="responsive_table.html">Responsive Table</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class=" fa fa-bar-chart-o"></i>
+                          <span>Charts</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="morris.html">Morris</a></li>
+                          <li><a  href="chartjs.html">Chartjs</a></li>
+                      </ul>
+                  </li>
+
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
