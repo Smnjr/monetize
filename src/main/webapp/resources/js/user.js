@@ -53,7 +53,6 @@ $(function() {
 							console.log("DONE", e.responseText);
 						}
 					});
-					event.preventDefault();
 					NProgress.done();
 				},
 
@@ -105,7 +104,7 @@ $(function() {
 	
 	function display(data, classe) {
 		var div = '<div id="mensagem"></div>';
-		$('.row').prepend(div);
+		$('.form-panel').prepend(div);
 		$('#mensagem').addClass(classe);
 		$('#mensagem').html(data);
 	}

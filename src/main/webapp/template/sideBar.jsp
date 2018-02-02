@@ -4,13 +4,13 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
               
-              	  <p class="centered"><a href="profile.html"><img src="${pageContext.request.contextPath}/resources/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-              	  <h5 class="centered">Marcel Newman</h5>
+              	  <p class="centered"><a href="${pageContext.request.contextPath}/home/user"><img src="${pageContext.request.contextPath}/resources/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered">${usuario.nome}</h5>
               	  	
                   <li class="mt">
-                      <a class="active" href="index.html">
-                          <i class="fa fa-dashboard"></i>
-                          <span>Dashboard</span>
+                      <a class="active" href="${pageContext.request.contextPath}/home/user">
+                          <i class="fa fa-user-circle-o"></i>
+                          <span>Perfil do usuário</span>
                       </a>
                   </li>
 

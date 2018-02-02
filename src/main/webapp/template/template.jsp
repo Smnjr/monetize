@@ -19,6 +19,24 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style-responsive.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.css">
+		
+		
+		<!-- js -->
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/jquery.validate.js"> </script> 
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/localization/messages_pt_BR.js"> </script>
+		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery-ui-1.9.2.custom.min.js">  </script>		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery.ui.touch-punch.min.js">  </script>
+		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-accordion/jquery.dcjqaccordion.2.7.js">  </script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-scrollTo/jquery.scrollTo.min.js">  </script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-nicescrool/jquery.nicescroll.js">  </script>
+		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js"></script>
+
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common-scripts.js">  </script>
 
 
 
@@ -48,22 +66,5 @@
 		</section>
 		<tiles:insertAttribute name="footer" />
 	</section>
-	
-	<!-- js -->
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/jquery-3.2.1.js">  </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery-ui-1.9.2.custom.min.js">  </script>		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery.ui.touch-punch.min.js">  </script>
-		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-accordion/jquery.dcjqaccordion.2.7.js">  </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-scrollTo/jquery.scrollTo.min.js">  </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-nicescrool/jquery.nicescroll.js">  </script>
-		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/jquery.validate.js"> </script> 
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-validation/localization/messages_pt_BR.js"> </script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/nprogress-master/nprogress.js"></script>
-
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common-scripts.js">  </script>
-
 </body>
 </html>
